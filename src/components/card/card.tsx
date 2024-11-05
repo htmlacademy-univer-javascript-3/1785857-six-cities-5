@@ -1,18 +1,26 @@
-function Card(): JSX.Element {
+import { useState } from 'react';
+import { CardType } from '../../types/card';
+import { Link } from 'react-router-dom';
+
+function Card({imageUrl, header, price, type, isPremium, id}: CardType): JSX.Element {
+
+  const [isCardActive, setCardActive] = useState(false);
+  // Вывод в консоль – это временное решение, чтобы линтер не ругался на неиспользуемую переменную isCardActive
+  // eslint-disable-next-line no-console
+  console.log(isCardActive);
+
   return(
-    <article className="cities__card place-card">
-      <div className="place-card__mark">
-        <span>Premium</span>
-      </div>
+    <article className="cities__card place-card" onMouseEnter={() => setCardActive(true)} onMouseLeave={() => setCardActive(false)} >
+      {isPremium ? <div className="place-card__mark"><span>Premium</span></div> : null}
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <a href="#">
-          <img className="place-card__image" src="img/apartment-01.jpg" width="260" height="200" alt="Place image" />
-        </a>
+        <Link to={`/offer/${id}`}>
+          <img className="place-card__image" src={imageUrl} width="260" height="200" alt={header} />
+        </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">&euro;120</b>
+            <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button className="place-card__bookmark-button button" type="button">
@@ -29,9 +37,9 @@ function Card(): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">Beautiful &amp; luxurious apartment at great location</a>
+          <Link to={`/offer/${id}`}>{header}</Link>
         </h2>
-        <p className="place-card__type">Apartment</p>
+        <p className="place-card__type">{type}</p>
       </div>
     </article>
   );

@@ -11,4 +11,11 @@ enum AuthorizationStatus {
   Unknown = 'UNKNOWN'
 }
 
-export { Path, AuthorizationStatus };
+enum OfferType {
+  Apartment = 'apartment',
+  Room = 'room',
+  House = 'house',
+  Hotel = 'hotel'
+}
+
+export { Path, AuthorizationStatus, OfferType };
