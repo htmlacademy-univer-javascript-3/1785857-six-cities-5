@@ -6,19 +6,16 @@ import PageNotFound from '../404/404';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthorizationStatus, Path } from '../../utils/constants';
 import PrivateRoute from '../private-route/private-route';
+import { CardsType } from '../../types/card';
 
 
-type AppProps = {
-  placesNumber: number;
-}
-
-function App({placesNumber}: AppProps): JSX.Element {
+function App(offers: CardsType): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path = {Path.MainPage} element = {<Main placesNumber={placesNumber}/>} />
+        <Route path = {Path.MainPage} element = {<Main {...offers}/>} />
         <Route path = {Path.LoginPage} element = {<Login/>} />
-        <Route path = {Path.FavPage} element = {<PrivateRoute authorizationStatus = {AuthorizationStatus.NoAuth}><Favourites/></PrivateRoute>} />
+        <Route path = {Path.FavPage} element = {<PrivateRoute authorizationStatus = {AuthorizationStatus.NoAuth}><Favourites /></PrivateRoute>} />
         <Route path = {Path.OfferPage} element = {<Offer/>} />
         <Route path = '*' element = {<PageNotFound/>} />
       </Routes>
