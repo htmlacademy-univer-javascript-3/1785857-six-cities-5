@@ -11,6 +11,8 @@ const offers: CardType[] = [
     type: OfferType.Hotel,
     isFavourite: false,
     rating: 5,
+    lat: 52.3909553943508,
+    lng: 4.85309666406198
   },
   {
     id: 2,
@@ -21,6 +23,8 @@ const offers: CardType[] = [
     type: OfferType.House,
     isFavourite: false,
     rating: 4,
+    lat: 52.3609553943508,
+    lng: 4.85309666406198
   },
   {
     id: 3,
@@ -31,6 +35,8 @@ const offers: CardType[] = [
     type: OfferType.Apartment,
     isFavourite: false,
     rating: 5,
+    lat: 52.3909553943508,
+    lng: 4.929309666406198
   },
   {
     id: 4,
@@ -41,8 +47,9 @@ const offers: CardType[] = [
     type: OfferType.Apartment,
     isFavourite: false,
     rating: 3,
+    lat: 52.3809553943508,
+    lng: 4.939309666406198
   },
 ];
 
 export default offers;
-

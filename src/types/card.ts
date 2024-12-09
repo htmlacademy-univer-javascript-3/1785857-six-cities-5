@@ -9,6 +9,8 @@ type CardType = {
   type: OfferType;
   isFavourite: boolean;
   rating: number;
+  lat: number;
+  lng: number;
 }
 
 type CardsType = CardType[];

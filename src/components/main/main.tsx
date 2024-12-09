@@ -1,8 +1,21 @@
 import { JSX } from 'react/jsx-runtime';
 import { CardsType } from '../../types/card';
 import Cards from '../cards/cards';
+import Map from '../map/map';
+import { CityType, PointsType, PointType } from '../../types/point';
 
-function Main(offers: CardsType): JSX.Element {
+type MainProps = {
+  offers: CardsType;
+  city: CityType;
+  points: PointsType;
+  onListItemHover: (listItemName: string) => void;
+  selectedPoint: PointType | undefined;
+};
+
+function Main(props: MainProps): JSX.Element {
+
+  const {city, points, offers, onListItemHover, selectedPoint} = props;
+
   return(
     <div className="page page--gray page--main">
       <header className="header">
@@ -93,11 +106,13 @@ function Main(offers: CardsType): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <Cards {...offers} />
+                <Cards offers = {offers} onListItemHover = {onListItemHover} />
               </div>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <section className="cities__map map">
+                <Map city={city} points={points} selectedPoint={selectedPoint} />
+              </section>
             </div>
           </div>
         </div>
