@@ -18,4 +18,8 @@ enum OfferType {
   Hotel = 'hotel'
 }
 
-export { Path, AuthorizationStatus, OfferType };
+const URL_MARKER_DEFAULT = '../../markup/img/pin.svg';
+
+const URL_MARKER_CURRENT = '../../markup/img/pin-active.svg';
+
+export { Path, AuthorizationStatus, OfferType, URL_MARKER_DEFAULT, URL_MARKER_CURRENT };

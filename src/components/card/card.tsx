@@ -1,26 +1,36 @@
-import { useState } from 'react';
 import { CardType } from '../../types/card';
 import { Link } from 'react-router-dom';
+import { MouseEvent } from 'react';
 
-function Card({...offers}: CardType): JSX.Element {
+type CardProps = {
+  offer: CardType;
+  onListItemHover: (listItemName: string) => void;
+};
 
-  const [isCardActive, setCardActive] = useState(false);
-  // Вывод в консоль – это временное решение, чтобы линтер не ругался на неиспользуемую переменную isCardActive
-  // eslint-disable-next-line no-console
-  console.log(isCardActive);
+function Card(props: CardProps): JSX.Element {
+
+  const {offer, onListItemHover} = props;
+
+  const {header, price, isPremium, imageUrl, id, type} = offer;
+
+  const handleListItemHover = (event: MouseEvent<HTMLLIElement>) => {
+    event.preventDefault();
+    const offerHeader = event.currentTarget.lastChild?.childNodes[2].textContent;
+    onListItemHover(`${offerHeader}`);
+  };
 
   return(
-    <article className="cities__card place-card" onMouseEnter={() => setCardActive(true)} onMouseLeave={() => setCardActive(false)} >
-      {offers.isPremium ? <div className="place-card__mark"><span>Premium</span></div> : null}
+    <article className="cities__card place-card" onMouseEnter={handleListItemHover} >
+      {isPremium ? <div className="place-card__mark"><span>Premium</span></div> : null}
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={`/offer/${offers.id}`}>
-          <img className="place-card__image" src={offers.imageUrl} width="260" height="200" alt={offers.header} />
+        <Link to={`/offer/${id}`}>
+          <img className="place-card__image" src={imageUrl} width="260" height="200" alt={header} />
         </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">&euro;{offers.price}</b>
+            <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button className="place-card__bookmark-button button" type="button">
@@ -37,9 +47,9 @@ function Card({...offers}: CardType): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${offers.id}`}>{offers.header}</Link>
+          <Link to={`/offer/${id}`}>{header}</Link>
         </h2>
-        <p className="place-card__type">{offers.type}</p>
+        <p className="place-card__type">{type}</p>
       </div>
     </article>
   );
