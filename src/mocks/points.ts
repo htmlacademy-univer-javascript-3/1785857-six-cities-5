@@ -1,7 +1,9 @@
 import { PointsType, CityType } from '../types/point';
-import offers from './offers';
+import { offers, offersNearby } from './offers';
 
 const points: PointsType = offers.map((elem) => ({title: elem.header, lat: elem.lat, lng: elem.lng}));
+
+const pointsNearby: PointsType = offersNearby.map((elem) => ({title: elem.header, lat: elem.lat, lng: elem.lng}));
 
 const city: CityType = {
   title: 'Amsterdam',
@@ -10,4 +12,4 @@ const city: CityType = {
   zoom: 10,
 };
 
-export {points, city};
+export {points, city, pointsNearby};
