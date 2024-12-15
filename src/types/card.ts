@@ -11,6 +11,7 @@ type CardType = {
   rating: number;
   lat: number;
   lng: number;
+  city: string;
 }
 
 type CardsType = CardType[];
