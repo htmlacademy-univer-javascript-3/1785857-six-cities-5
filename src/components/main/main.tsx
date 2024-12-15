@@ -5,25 +5,31 @@ import { PointsType, PointType } from '../../types/point';
 import { CitiesType, CityType } from '../../types/city';
 import Cities from '../cities/cities';
 import { useAppSelector } from '../../hooks';
+import { FilterType } from '../../types/filter';
+import { CardsType } from '../../types/card';
+import Filter from '../filter/filter';
 
 
 type MainProps = {
-  city: CityType;
   points: PointsType;
   onListItemHover: (listItemName: string) => void;
   selectedPoint: PointType | undefined;
   cities: CitiesType;
+  currentSort: FilterType;
+  sortOffers: (offersList: CardsType) => CardsType;
+  onChange: (newFilter: FilterType) => void;
+  currentCity: CityType;
 };
 
 function Main(props: MainProps): JSX.Element {
 
-  const {city, points, onListItemHover, selectedPoint, cities} = props;
+  const { points, onListItemHover, selectedPoint, cities, currentSort, sortOffers, onChange, currentCity} = props;
 
-  const currentCity: string = useAppSelector((state) => state.city.title);
+  const currentCityTitle: string = currentCity.title;
 
   const currentPlacesNumber: number = useAppSelector((state) => state.offers.length);
 
-  return(
+  return (
     <div className="page page--gray page--main">
       <header className="header">
         <div className="container">
@@ -59,7 +65,7 @@ function Main(props: MainProps): JSX.Element {
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              <Cities cities = {cities}/>
+              <Cities cities={cities} />
             </ul>
           </section>
         </div>
@@ -67,29 +73,15 @@ function Main(props: MainProps): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{currentPlacesNumber} places to stay in {currentCity}</b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex={0}>
-                  Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
-                    <use xlinkHref="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-                <ul className="places__options places__options--custom places__options--opened">
-                  <li className="places__option places__option--active" tabIndex={0}>Popular</li>
-                  <li className="places__option" tabIndex={0}>Price: low to high</li>
-                  <li className="places__option" tabIndex={0}>Price: high to low</li>
-                  <li className="places__option" tabIndex={0}>Top rated first</li>
-                </ul>
-              </form>
+              <b className="places__found">{currentPlacesNumber} places to stay in {currentCityTitle}</b>
+              <Filter onChange = {onChange} currentSort = {currentSort} />
               <div className="cities__places-list places__list tabs__content">
-                <Cards onListItemHover = {onListItemHover} />
+                <Cards onListItemHover={onListItemHover} sortOffers={sortOffers} />
               </div>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map city={city} points={points} selectedPoint={selectedPoint} />
+                <Map points={points} selectedPoint={selectedPoint} currentCity={currentCity}/>
               </section>
             </div>
           </div>
