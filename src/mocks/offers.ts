@@ -12,7 +12,8 @@ const offers: CardType[] = [
     isFavourite: false,
     rating: 5,
     lat: 52.3909553943508,
-    lng: 4.85309666406198
+    lng: 4.85309666406198,
+    city: 'Paris',
   },
   {
     id: 2,
@@ -24,7 +25,8 @@ const offers: CardType[] = [
     isFavourite: false,
     rating: 4,
     lat: 52.3609553943508,
-    lng: 4.85309666406198
+    lng: 4.85309666406198,
+    city: 'Paris',
   },
   {
     id: 3,
@@ -36,7 +38,8 @@ const offers: CardType[] = [
     isFavourite: false,
     rating: 5,
     lat: 52.3909553943508,
-    lng: 4.929309666406198
+    lng: 4.929309666406198,
+    city: 'Paris',
   },
   {
     id: 4,
@@ -48,7 +51,34 @@ const offers: CardType[] = [
     isFavourite: false,
     rating: 3,
     lat: 52.3809553943508,
-    lng: 4.939309666406198
+    lng: 4.939309666406198,
+    city: 'Amsterdam',
+  },
+  {
+    id: 5,
+    imageUrl: 'https://plus.unsplash.com/premium_photo-1661964071015-d97428970584',
+    isPremium: true,
+    price: 10000,
+    header: 'Super Luxury Village 5*',
+    type: OfferType.Hotel,
+    isFavourite: false,
+    rating: 5,
+    lat: 52.3909553943508,
+    lng: 4.85309666406198,
+    city: 'Amsterdam',
+  },
+  {
+    id: 6,
+    imageUrl: 'https://images.unsplash.com/photo-1517541866997-ea18e32ea9e9',
+    isPremium: false,
+    price: 1500,
+    header: 'Sunset House 3*',
+    type: OfferType.House,
+    isFavourite: false,
+    rating: 4,
+    lat: 52.3609553943508,
+    lng: 4.85309666406198,
+    city: 'Hamburg',
   },
 ];
 
@@ -63,7 +93,8 @@ const offersNearby: CardType[] = [
     isFavourite: false,
     rating: 5,
     lat: 52.3909553943508,
-    lng: 4.85309666406198
+    lng: 4.85309666406198,
+    city: 'Hamburg',
   },
   {
     id: 2,
@@ -75,7 +106,8 @@ const offersNearby: CardType[] = [
     isFavourite: false,
     rating: 4,
     lat: 52.3609553943508,
-    lng: 4.85309666406198
+    lng: 4.85309666406198,
+    city: 'Hamburg',
   },
   {
     id: 3,
@@ -87,7 +119,8 @@ const offersNearby: CardType[] = [
     isFavourite: false,
     rating: 5,
     lat: 52.3909553943508,
-    lng: 4.929309666406198
+    lng: 4.929309666406198,
+    city: 'Hamburg',
   },
 ];
 

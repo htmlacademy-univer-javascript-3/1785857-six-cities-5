@@ -6,11 +6,4 @@ type PointType = {
 
 type PointsType = PointType[];
 
-type CityType = {
-  title: string;
-  lat: number;
-  lng: number;
-  zoom: number;
-}
-
-export type { PointType, PointsType, CityType };
+export type { PointType, PointsType };

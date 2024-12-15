@@ -1,21 +1,22 @@
 import { ReviewsType } from '../../types/review';
 import Reviews from '../reviews/reviews';
 import Map from '../map/map';
-import { CityType, PointsType, PointType } from '../../types/point';
-import { CardsType } from '../../types/card';
+import { PointsType, PointType } from '../../types/point';
+// import { CardsType } from '../../types/card';
 import Cards from '../cards/cards';
+import { CityType } from '../../types/city';
 
 type OfferProps = {
   reviews: ReviewsType;
   city: CityType;
   selectedPoint: PointType | undefined;
-  offersNearby: CardsType;
+  /* offersNearby: CardsType; */
   onListItemHover: (listItemName: string) => void;
   pointsNearby: PointsType;
 };
 
 function Offer(props: OfferProps): JSX.Element {
-  const {reviews, city, selectedPoint, offersNearby, onListItemHover, pointsNearby} = props;
+  const {reviews, city, selectedPoint, /* offersNearby, */ onListItemHover, pointsNearby} = props;
   return (
     <main className="page__main page__main--offer">
       <section className="offer">
@@ -149,7 +150,7 @@ function Offer(props: OfferProps): JSX.Element {
         <section className="near-places places">
           <h2 className="near-places__title">Other places in the neighbourhood</h2>
           <div className="near-places__list places__list">
-            <Cards offers = {offersNearby} onListItemHover = {onListItemHover} />
+            <Cards onListItemHover = {onListItemHover} />
           </div>
         </section>
       </div>

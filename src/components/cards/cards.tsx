@@ -1,14 +1,16 @@
 import Card from '../card/card';
 import { CardsType } from '../../types/card';
+import { useAppSelector } from '../../hooks';
 
 type CardsProps = {
-  offers: CardsType;
   onListItemHover: (listItemName: string) => void;
 };
 
 function Cards(props: CardsProps): JSX.Element {
 
-  const {offers, onListItemHover} = props;
+  const offers: CardsType = useAppSelector((state) => state.offers);
+
+  const {onListItemHover} = props;
 
   const arrayCardItems = Object.values(offers).map((offer) =>
     (
