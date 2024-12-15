@@ -74,4 +74,12 @@ enum Actions {
   GET_OFFERS = 'GET_OFFERS',
 }
 
-export { Path, AuthorizationStatus, OfferType, URL_MARKER_DEFAULT, URL_MARKER_CURRENT, cities, Actions };
+enum Filters {
+  Popular = 'Popular',
+  TopRated = 'Top rated first',
+  LowToHigh = 'Price: low to high',
+  HighToLow = 'Price: high to low'
+}
+
+export { Path, AuthorizationStatus, OfferType, URL_MARKER_DEFAULT, URL_MARKER_CURRENT, cities, Actions, Filters };
+

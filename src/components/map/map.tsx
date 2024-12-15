@@ -7,9 +7,9 @@ import 'leaflet/dist/leaflet.css';
 import { CityType } from '../../types/city.ts';
 
 type MapProps = {
-  city: CityType;
   points: PointsType;
   selectedPoint: PointType | undefined;
+  currentCity: CityType;
 };
 
 const defaultCustomIcon = new Icon({
@@ -25,14 +25,23 @@ const currentCustomIcon = new Icon({
 });
 
 function Map(props: MapProps): JSX.Element {
-  const {city, points, selectedPoint} = props;
+
+  const {points, selectedPoint, currentCity} = props;
 
   const mapRef = useRef(null);
-  const map = useMap(mapRef, city);
+
+  const map = useMap(mapRef, currentCity);
 
   useEffect(() => {
+
     if (map) {
+      map.flyTo({
+        lat: currentCity.lat,
+        lng: currentCity.lng
+      }, 10);
+
       const markerLayer = layerGroup().addTo(map);
+
       points.forEach((point) => {
         const marker = new Marker({
           lat: point.lat,
@@ -52,7 +61,7 @@ function Map(props: MapProps): JSX.Element {
         map.removeLayer(markerLayer);
       };
     }
-  }, [map, points, selectedPoint]);
+  }, [map, points, selectedPoint, currentCity.lat, currentCity.lng]);
 
   return <div style={{height: '100%'}} ref={mapRef}></div>;
 }

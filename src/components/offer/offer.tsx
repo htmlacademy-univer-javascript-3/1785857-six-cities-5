@@ -4,19 +4,21 @@ import Map from '../map/map';
 import { PointsType, PointType } from '../../types/point';
 // import { CardsType } from '../../types/card';
 import Cards from '../cards/cards';
+import { CardsType } from '../../types/card';
 import { CityType } from '../../types/city';
 
 type OfferProps = {
   reviews: ReviewsType;
-  city: CityType;
   selectedPoint: PointType | undefined;
   /* offersNearby: CardsType; */
   onListItemHover: (listItemName: string) => void;
   pointsNearby: PointsType;
+  sortOffers: (offersList: CardsType) => CardsType;
+  currentCity: CityType;
 };
 
 function Offer(props: OfferProps): JSX.Element {
-  const {reviews, city, selectedPoint, /* offersNearby, */ onListItemHover, pointsNearby} = props;
+  const {reviews, selectedPoint, /* offersNearby, */ onListItemHover, pointsNearby, sortOffers, currentCity} = props;
   return (
     <main className="page__main page__main--offer">
       <section className="offer">
@@ -143,14 +145,14 @@ function Offer(props: OfferProps): JSX.Element {
           </div>
         </div>
         <section className="offer__map map">
-          <Map city={city} points={pointsNearby} selectedPoint={selectedPoint}/>
+          <Map points={pointsNearby} selectedPoint={selectedPoint} currentCity={currentCity}/>
         </section>
       </section>
       <div className="container">
         <section className="near-places places">
           <h2 className="near-places__title">Other places in the neighbourhood</h2>
           <div className="near-places__list places__list">
-            <Cards onListItemHover = {onListItemHover} />
+            <Cards onListItemHover = {onListItemHover} sortOffers = {sortOffers} />
           </div>
         </section>
       </div>

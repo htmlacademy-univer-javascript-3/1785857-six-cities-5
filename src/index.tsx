@@ -15,7 +15,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App points={points} city={cities[0]} cities={cities} reviews={reviews} /* offersNearby={offersNearby}*/ pointsNearby={pointsNearby} />
+      <App points={points} cities={cities} reviews={reviews} /* offersNearby={offersNearby}*/ pointsNearby={pointsNearby} />
     </Provider>
   </React.StrictMode>
 );
