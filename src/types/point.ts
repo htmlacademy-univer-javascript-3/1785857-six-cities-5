@@ -1,9 +1,13 @@
 type PointType = {
+  latitude: number;
+  longitude: number;
+  zoom: number;
+}
+
+type PointTitleType = {
   title: string;
-  lat: number;
-  lng: number;
 }
 
 type PointsType = PointType[];
 
-export type { PointType, PointsType };
+export type { PointType, PointsType, PointTitleType };

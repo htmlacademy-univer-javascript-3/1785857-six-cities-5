@@ -1,9 +1,9 @@
+import { PointType } from './point';
+
 type CityType = {
   id: number;
-  title: string;
-  lat: number;
-  lng: number;
-  zoom: number;
+  name: string;
+  location: PointType;
 }
 
 type CitiesType = CityType[];
