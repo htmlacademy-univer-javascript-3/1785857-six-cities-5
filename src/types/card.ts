@@ -1,17 +1,18 @@
 import { OfferType } from '../utils/constants';
+import { CityType } from './city';
+import { PointType } from './point';
 
 type CardType = {
   id: number;
-  imageUrl: string;
+  previewImage: string;
   isPremium: boolean;
   price: number;
-  header: string;
+  title: string;
   type: OfferType;
   isFavourite: boolean;
   rating: number;
-  lat: number;
-  lng: number;
-  city: string;
+  location: PointType;
+  city: CityType;
 }
 
 type CardsType = CardType[];

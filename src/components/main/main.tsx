@@ -1,7 +1,7 @@
 import { JSX } from 'react/jsx-runtime';
 import Cards from '../cards/cards';
 import Map from '../map/map';
-import { PointsType, PointType } from '../../types/point';
+import { PointType } from '../../types/point';
 import { CitiesType, CityType } from '../../types/city';
 import Cities from '../cities/cities';
 import { useAppSelector } from '../../hooks';
@@ -11,7 +11,6 @@ import Filter from '../filter/filter';
 
 
 type MainProps = {
-  points: PointsType;
   onListItemHover: (listItemName: string) => void;
   selectedPoint: PointType | undefined;
   cities: CitiesType;
@@ -23,11 +22,15 @@ type MainProps = {
 
 function Main(props: MainProps): JSX.Element {
 
-  const { points, onListItemHover, selectedPoint, cities, currentSort, sortOffers, onChange, currentCity} = props;
+  const { onListItemHover, selectedPoint, cities, currentSort, sortOffers, onChange, currentCity} = props;
 
-  const currentCityTitle: string = currentCity.title;
+  const currentCityTitle: string = currentCity.name;
 
-  const currentPlacesNumber: number = useAppSelector((state) => state.offers.length);
+  const offers: CardsType = useAppSelector((state) => state.offers);
+
+  const currentPlaces = offers.filter((elem) => elem.city.name === currentCityTitle);
+
+  const currentPlacesNumber: number = currentPlaces.length;
 
   return (
     <div className="page page--gray page--main">
@@ -81,7 +84,7 @@ function Main(props: MainProps): JSX.Element {
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map points={points} selectedPoint={selectedPoint} currentCity={currentCity}/>
+                <Map selectedPoint={selectedPoint}/>
               </section>
             </div>
           </div>

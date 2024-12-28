@@ -5,11 +5,11 @@ import { PointType, PointsType } from '../../types/point.ts';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../utils/constants';
 import 'leaflet/dist/leaflet.css';
 import { CityType } from '../../types/city.ts';
+import { useAppSelector } from '../../hooks/index.ts';
+import { CardsType } from '../../types/card.ts';
 
 type MapProps = {
-  points: PointsType;
   selectedPoint: PointType | undefined;
-  currentCity: CityType;
 };
 
 const defaultCustomIcon = new Icon({
@@ -26,7 +26,13 @@ const currentCustomIcon = new Icon({
 
 function Map(props: MapProps): JSX.Element {
 
-  const {points, selectedPoint, currentCity} = props;
+  const offers: CardsType = useAppSelector((state) => state.offers);
+
+  const points: PointsType = offers.map((elem) => ({title: elem.title, latitude: elem.location.latitude, longitude: elem.location.longitude, zoom: elem.location.zoom}));
+
+  const currentCity: CityType = useAppSelector((state) => state.city);
+
+  const {selectedPoint} = props;
 
   const mapRef = useRef(null);
 
@@ -36,21 +42,21 @@ function Map(props: MapProps): JSX.Element {
 
     if (map) {
       map.flyTo({
-        lat: currentCity.lat,
-        lng: currentCity.lng
+        lat: currentCity.location.latitude,
+        lng: currentCity.location.longitude
       }, 10);
 
       const markerLayer = layerGroup().addTo(map);
 
       points.forEach((point) => {
         const marker = new Marker({
-          lat: point.lat,
-          lng: point.lng
+          lat: point.latitude,
+          lng: point.longitude
         });
 
         marker
           .setIcon(
-            selectedPoint !== undefined && point.title === selectedPoint.title
+            selectedPoint !== undefined && point.latitude === selectedPoint.latitude && point.longitude === selectedPoint.longitude
               ? currentCustomIcon
               : defaultCustomIcon
           )
@@ -61,7 +67,7 @@ function Map(props: MapProps): JSX.Element {
         map.removeLayer(markerLayer);
       };
     }
-  }, [map, points, selectedPoint, currentCity.lat, currentCity.lng]);
+  }, [map, points, selectedPoint, currentCity.location.latitude, currentCity.location.longitude]);
 
   return <div style={{height: '100%'}} ref={mapRef}></div>;
 }

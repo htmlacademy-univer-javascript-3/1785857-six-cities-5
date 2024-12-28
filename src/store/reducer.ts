@@ -1,16 +1,17 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { offers, offersNearby } from '../mocks/offers';
-import reviews from '../mocks/reviews';
 import { StateType } from '../types/state';
-import { cities } from '../utils/constants';
-import { setCityAction, getOffers } from './actions';
+import { AuthorizationStatus, cities } from '../utils/constants';
+import { setCityAction, getOffers, requireAuthorization, setError, showLoader } from './actions';
 
 const initialState: StateType = {
   city: cities[0],
-  offers: offers.filter((el) => el.city === cities[0].title),
-  offersNearby: offersNearby,
-  reviews: reviews,
+  offers: [],
+  offersNearby: [],
+  reviews: [],
   offer: null,
+  authorizationStatus: AuthorizationStatus.Unknown,
+  isLoading: false,
+  error: null,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -18,9 +19,22 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(setCityAction, (state, action) => {
       state.city = action.payload;
     })
-    .addCase(getOffers, (state) => {
-      state.offers = offers.filter((el) => el.city === state.city.title);
+    .addCase(getOffers, (state, action) => {
+      state.offers = action.payload;
+    })
+    .addCase(showLoader, (state, action) => {
+      state.isLoading = action.payload;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload;
+    })
+    .addCase(setError, (state, action) => {
+      state.error = action.payload;
     });
 });
 
 export { reducer };
+
+//      state.offers = offers.filter((el) => el.city === state.city.title);
+
+// в initial state:  offers.filter((el) => el.city === cities[0].title),
