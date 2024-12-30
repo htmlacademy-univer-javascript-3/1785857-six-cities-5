@@ -3,7 +3,7 @@ import Login from '../login/login';
 import Favourites from '../favourites/favourites';
 import Offer from '../offer/offer';
 import PageNotFound from '../404/404';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { AuthorizationStatus, Filters, Path } from '../../utils/constants';
 import PrivateRoute from '../private-route/private-route';
 import { PointsType, PointType } from '../../types/point';
@@ -13,6 +13,8 @@ import { CardsType } from '../../types/card';
 import { FilterType } from '../../types/filter';
 import { useAppSelector } from '../../hooks';
 import Loader from '../component/loader';
+import HistoryRouter from '../history-route/history-route';
+import browserHistory from '../../utils/browser-history';
 
 type AppProps = {
   cities: CitiesType;
@@ -29,6 +31,7 @@ function App(props: AppProps): JSX.Element {
   // const pointsNearby: PointsType = offersNearby.map((elem) => ({title: elem.title, lat: elem.location.lat, lng: elem.location.lng}));
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
   const points: PointsType = offers.map((elem) => ({title: elem.title, latitude: elem.location.latitude, longitude: elem.location.longitude, zoom: elem.location.zoom}));
 
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
@@ -46,7 +49,7 @@ function App(props: AppProps): JSX.Element {
   const {cities} = props;
 
   const handleListItemHover = (listItemName: string | null | undefined) => {
-    const currentPoint = points.find(() => 'point.title' === listItemName);
+    const currentPoint = points.find((point) => point.title === listItemName);
     setSelectedPoint(currentPoint);
   };
 
@@ -70,7 +73,7 @@ function App(props: AppProps): JSX.Element {
   }
 
   return (
-    <BrowserRouter>
+    <HistoryRouter history={browserHistory}>
       <Routes>
         <Route path = {Path.MainPage} element = {<Main currentCity={currentCity} cities = {cities} onListItemHover={handleListItemHover} selectedPoint={selectedPoint} currentSort = {sortType} sortOffers = {sortOffers} onChange = {setSortType} />} />
         <Route path = {Path.LoginPage} element = {<Login/>} />
@@ -78,7 +81,7 @@ function App(props: AppProps): JSX.Element {
         <Route path = {Path.OfferPage} element = {<Offer reviews = {reviews} selectedPoint = {selectedPoint} sortOffers={sortOffers} /*offersNearby = {offersNearby}*/ onListItemHover={handleListItemHover} />} />
         <Route path = '*' element = {<PageNotFound/>} />
       </Routes>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 }
 
