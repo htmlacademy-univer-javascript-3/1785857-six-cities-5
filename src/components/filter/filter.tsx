@@ -20,8 +20,6 @@ function Filter(props: FilterProps): JSX.Element {
   const handleFilterClick = (type: FilterType) => {
     onChange(type);
     setOpened(false);
-    // eslint-disable-next-line no-console
-    console.log('click-filter');
   };
 
   const arrayFilterItems = (Object.entries(Filters) as [FilterType, (typeof Filters)[FilterType]][]).map(([type, label]) =>

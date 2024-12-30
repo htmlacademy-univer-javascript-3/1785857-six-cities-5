@@ -34,7 +34,3 @@ const reducer = createReducer(initialState, (builder) => {
 });
 
 export { reducer };
-
-//      state.offers = offers.filter((el) => el.city === state.city.title);
-
-// в initial state:  offers.filter((el) => el.city === cities[0].title),

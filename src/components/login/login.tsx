@@ -1,7 +1,7 @@
 import { FormEvent, useRef } from 'react';
 import { useAppDispatch } from '../../hooks';
-/*import { useNavigate } from 'react-router-dom';
-import { APIRoute } from '../../utils/constants';*/
+import { useNavigate } from 'react-router-dom';
+import { APIRoute } from '../../utils/constants';
 import { loginAction } from '../../store/api-actions';
 
 function Login(): JSX.Element {
@@ -10,7 +10,7 @@ function Login(): JSX.Element {
   const passwordRef = useRef<HTMLInputElement | null>(null);
 
   const dispatch = useAppDispatch();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -21,6 +21,7 @@ function Login(): JSX.Element {
         password: passwordRef.current.value
       }));
     }
+    navigate(APIRoute.Offers);
   };
 
   return (

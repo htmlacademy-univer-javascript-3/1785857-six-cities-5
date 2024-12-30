@@ -4,10 +4,13 @@ import Map from '../map/map';
 import { PointType } from '../../types/point';
 import { CitiesType, CityType } from '../../types/city';
 import Cities from '../cities/cities';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { FilterType } from '../../types/filter';
 import { CardsType } from '../../types/card';
 import Filter from '../filter/filter';
+import { Link, useNavigate } from 'react-router-dom';
+import { logoutAction } from '../../store/api-actions';
+import { APIRoute, AuthorizationStatus } from '../../utils/constants';
 
 
 type MainProps = {
@@ -22,15 +25,30 @@ type MainProps = {
 
 function Main(props: MainProps): JSX.Element {
 
-  const { onListItemHover, selectedPoint, cities, currentSort, sortOffers, onChange, currentCity} = props;
+  const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
+
+  const { onListItemHover, selectedPoint, cities, currentSort, sortOffers, onChange, currentCity } = props;
 
   const currentCityTitle: string = currentCity.name;
 
   const offers: CardsType = useAppSelector((state) => state.offers);
 
+  const authStatus: AuthorizationStatus = useAppSelector((state) => state.authorizationStatus);
+
   const currentPlaces = offers.filter((elem) => elem.city.name === currentCityTitle);
 
   const currentPlacesNumber: number = currentPlaces.length;
+
+  const userEmail: string | null = localStorage.getItem('email');
+
+  const handleLogout = (event: React.MouseEvent) => {
+    event.preventDefault();
+    dispatch(logoutAction());
+    navigate(APIRoute.Login);
+    localStorage.removeItem('email');
+  };
 
   return (
     <div className="page page--gray page--main">
@@ -42,23 +60,33 @@ function Main(props: MainProps): JSX.Element {
                 <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
               </a>
             </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href="#">
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    <span className="header__favorite-count">3</span>
-                  </a>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
+            {authStatus === AuthorizationStatus.Auth ?
+              <nav className="header__nav">
+                <ul className="header__nav-list">
+                  <li className="header__nav-item user">
+                    <a className="header__nav-link header__nav-link--profile" href="#">
+                      <div className="header__avatar-wrapper user__avatar-wrapper">
+                      </div>
+                      <span className="header__user-name user__name">{userEmail}</span>
+                      <span className="header__favorite-count">3</span>
+                    </a>
+                  </li>
+                  <li className="header__nav-item">
+                    <Link className="header__nav-link" onClick={handleLogout} to="/" >
+                      <span className="header__signout">Sign out</span>
+                    </Link>
+                  </li>
+                </ul>
+              </nav> :
+              <nav className="header__nav">
+                <ul className="header__nav-list">
+                  <li className="header__nav-item">
+                    <Link className="header__nav-link" to="/login" >
+                      <span className="header__signout">Sign in</span>
+                    </Link>
+                  </li>
+                </ul>
+              </nav>}
           </div>
         </div>
       </header>
@@ -77,14 +105,14 @@ function Main(props: MainProps): JSX.Element {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{currentPlacesNumber} places to stay in {currentCityTitle}</b>
-              <Filter onChange = {onChange} currentSort = {currentSort} />
+              <Filter onChange={onChange} currentSort={currentSort} />
               <div className="cities__places-list places__list tabs__content">
                 <Cards onListItemHover={onListItemHover} sortOffers={sortOffers} />
               </div>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map selectedPoint={selectedPoint}/>
+                <Map selectedPoint={selectedPoint} />
               </section>
             </div>
           </div>
