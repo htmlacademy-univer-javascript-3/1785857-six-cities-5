@@ -1,7 +1,7 @@
 import { CitiesType } from '../types/city';
 
 enum Path {
-  MainPage = '/offers',
+  MainPage = '/',
   LoginPage = '/login',
   FavPage = '/favourites',
   OfferPage = '/offer/:id'
@@ -13,7 +13,7 @@ enum AuthorizationStatus {
   Unknown = 'UNKNOWN'
 }
 
-enum OfferType {
+enum ObjectType {
   Apartment = 'apartment',
   Room = 'room',
   House = 'house',
@@ -83,16 +83,38 @@ const URL_MARKER_CURRENT = '../../markup/img/pin-active.svg';
 
 enum Actions {
   SET_CITY = 'SET_CITY',
-  GET_OFFERS = 'GET_OFFERS',
+  SET_OFFERS = 'SET_OFFERS',
+  SET_OFFER = 'SET_OFFER',
   REQUIRE_AUTH = 'REQUIRE_AUTH',
   SET_ERROR = 'SET_ERROR',
   CLEAR_ERROR = 'CLEAR_ERROR',
-  SHOW_LOADER = 'SHOW_LOADER',
+  SHOW_CARDS_LOADER = 'SHOW_CARDS_LOADER',
+  SHOW_OFFER_LOADER = 'SHOW_OFFER_LOADER',
+  SHOW_REVIEWS_LOADER = 'SHOW_REVIEWS_LOADER',
+  SHOW_NEARBY_LOADER = 'SHOW_NEARBY_LOADER',
   USER_CHECK_AUTH = 'USER_CHECK_AUTH',
   USER_LOGIN = 'USER_LOGIN',
   USER_LOGOUT = 'USER_LOGOUT',
   REDIRECT_TO_ROOT = 'REDIRECT_TO_ROOT',
-  GET_USER_DATA = 'GET_USER_DATA',
+  SET_REVIEWS = 'SET_REVIEWS',
+  SET_NEARBY_OFFERS = 'SET_NEARBY_OFFERS',
+  CLEAN_OFFER = 'CLEAN_OFFER',
+  CLEAN_NEARBY_OFFERS = 'CLEAN_NEARBY_OFFERS',
+  CLEAN_REVIEWS = 'CLEAN_REVIEWS',
+  CLEAN_CITY = 'CLEAN_CITY'
+}
+
+enum APIActions {
+  GET_CITY = 'GET_CITY',
+  GET_OFFERS = 'GET_OFFERS',
+  GET_OFFER = 'GET_OFFER',
+  CHECK_AUTH = 'CHECK_AUTH',
+  LOGIN = 'LOGIN',
+  LOGOUT = 'LOGOUT',
+  GET_REVIEWS = 'GET_REVIEWS',
+  GET_NEARBY_OFFERS = 'GET_NEARBY_OFFERS',
+  GET_ERROR_CLEANED = 'GET_ERROR_CLEANED',
+  CREATE_COMMENT = 'CREATE_COMMENT',
 }
 
 enum Filters {
@@ -104,11 +126,13 @@ enum Filters {
 
 enum APIRoute {
   Offers = '/offers',
+  Offer = '/offer',
   Login = '/login',
   Logout = '/logout',
+  Comments = '/comments'
 }
 
 const TIMEOUT_SHOW_ERROR = 2000;
 
-export { Path, AuthorizationStatus, OfferType, URL_MARKER_DEFAULT, URL_MARKER_CURRENT, cities, Actions, Filters, APIRoute, TIMEOUT_SHOW_ERROR };
+export { Path, AuthorizationStatus, ObjectType, URL_MARKER_DEFAULT, URL_MARKER_CURRENT, cities, Actions, Filters, APIRoute, TIMEOUT_SHOW_ERROR, APIActions };
 

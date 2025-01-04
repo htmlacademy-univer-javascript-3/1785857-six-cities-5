@@ -1,7 +1,7 @@
 import { FormEvent, useRef } from 'react';
 import { useAppDispatch } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
-import { APIRoute } from '../../utils/constants';
+import { Path } from '../../utils/constants';
 import { loginAction } from '../../store/api-actions';
 
 function Login(): JSX.Element {
@@ -21,7 +21,7 @@ function Login(): JSX.Element {
         password: passwordRef.current.value
       }));
     }
-    navigate(APIRoute.Offers);
+    navigate(Path.MainPage);
   };
 
   return (

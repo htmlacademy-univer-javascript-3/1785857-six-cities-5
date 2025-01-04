@@ -1,13 +1,14 @@
+import { UserType } from './user';
+
 type ReviewType = {
-  id: number;
-  offerId: number;
-  avatarUrl: string;
-  userName: string;
+  id: string;
+  user: UserType;
   rating: number;
-  text: string;
-  dateTime: Date;
+  comment: string;
+  date: string;
 }
 
 type ReviewsType = ReviewType[];
 
 export type { ReviewType, ReviewsType };
+

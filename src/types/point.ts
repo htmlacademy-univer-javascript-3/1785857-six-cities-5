@@ -3,6 +3,7 @@ type PointType = {
   latitude: number;
   longitude: number;
   zoom: number;
+  id?: string;
 }
 
 type PointsType = PointType[];

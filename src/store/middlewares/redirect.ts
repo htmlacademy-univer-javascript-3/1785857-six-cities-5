@@ -9,7 +9,7 @@ export const redirect: Middleware<unknown, Reducer> =
   () =>
     (next) =>
       (action: PayloadAction<string>) => {
-        if (action.type === 'game/redirectToRoute') {
+        if (action.type === 'REDIRECT_TO_ROOT') {
           browserHistory.push(action.payload);
         }
 

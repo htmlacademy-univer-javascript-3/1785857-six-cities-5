@@ -12,7 +12,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { logoutAction } from '../../store/api-actions';
 import { APIRoute, AuthorizationStatus } from '../../utils/constants';
 
-
 type MainProps = {
   onListItemHover: (listItemName: string) => void;
   selectedPoint: PointType | undefined;
@@ -20,7 +19,6 @@ type MainProps = {
   currentSort: FilterType;
   sortOffers: (offersList: CardsType) => CardsType;
   onChange: (newFilter: FilterType) => void;
-  currentCity: CityType;
 };
 
 function Main(props: MainProps): JSX.Element {
@@ -29,7 +27,9 @@ function Main(props: MainProps): JSX.Element {
 
   const navigate = useNavigate();
 
-  const { onListItemHover, selectedPoint, cities, currentSort, sortOffers, onChange, currentCity } = props;
+  const { onListItemHover, selectedPoint, cities, currentSort, sortOffers, onChange } = props;
+
+  const currentCity: CityType = useAppSelector((state) => state.city);
 
   const currentCityTitle: string = currentCity.name;
 
@@ -77,7 +77,8 @@ function Main(props: MainProps): JSX.Element {
                     </Link>
                   </li>
                 </ul>
-              </nav> :
+              </nav>
+              :
               <nav className="header__nav">
                 <ul className="header__nav-list">
                   <li className="header__nav-item">
@@ -112,7 +113,7 @@ function Main(props: MainProps): JSX.Element {
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map selectedPoint={selectedPoint} />
+                <Map selectedPoint = {selectedPoint} offers = {offers} currentCity = {currentCity}/>
               </section>
             </div>
           </div>
