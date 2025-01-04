@@ -1,5 +1,5 @@
 import { useAppDispatch } from '../../hooks';
-import { setCityAction } from '../../store/actions';
+import { setCity } from '../../store/actions';
 import { CityType } from '../../types/city';
 import { cities } from '../../utils/constants';
 
@@ -21,7 +21,7 @@ function City(props: CityProps): JSX.Element {
     const element = cities.find((elem) => elem.name === clickedCity);
     if (element) {
       onClick();
-      dispatch(setCityAction(element));
+      dispatch(setCity(element));
     }
   };
 

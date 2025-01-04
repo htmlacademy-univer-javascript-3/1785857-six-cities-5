@@ -8,7 +8,7 @@ import { AuthorizationStatus, Filters, Path } from '../../utils/constants';
 import PrivateRoute from '../private-route/private-route';
 import { PointsType, PointType } from '../../types/point';
 import { useState } from 'react';
-import { CitiesType, CityType } from '../../types/city';
+import { CitiesType } from '../../types/city';
 import { CardsType } from '../../types/card';
 import { FilterType } from '../../types/filter';
 import { useAppSelector } from '../../hooks';
@@ -24,19 +24,11 @@ function App(props: AppProps): JSX.Element {
 
   const offers = useAppSelector((state) => state.offers);
 
-  const reviews = useAppSelector((state) => state.reviews);
-
-  // const offersNearby = useAppSelector((state) => state.offersNearby);
-
-  // const pointsNearby: PointsType = offersNearby.map((elem) => ({title: elem.title, lat: elem.location.lat, lng: elem.location.lng}));
-
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-
-  const points: PointsType = offers.map((elem) => ({title: elem.title, latitude: elem.location.latitude, longitude: elem.location.longitude, zoom: elem.location.zoom}));
+  const points: PointsType = offers.map((elem) => ({title: elem.title, latitude: elem.location.latitude, longitude: elem.location.longitude, zoom: elem.location.zoom, id: elem.id}));
 
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
 
-  const isOffersDataLoading = useAppSelector((state) => state.isLoading);
+  const isOffersDataLoading = useAppSelector((state) => state.areCardsLoading);
 
   const [selectedPoint, setSelectedPoint] = useState<PointType | undefined>(
     undefined
@@ -44,12 +36,10 @@ function App(props: AppProps): JSX.Element {
 
   const [sortType, setSortType] = useState<FilterType>(Filters.Popular);
 
-  const currentCity: CityType = useAppSelector((state) => state.city);
-
   const {cities} = props;
 
-  const handleListItemHover = (listItemName: string | null | undefined) => {
-    const currentPoint = points.find((point) => point.title === listItemName);
+  const handleListItemHover = (listItemId: string) => {
+    const currentPoint = points.find((point) => point.id === listItemId);
     setSelectedPoint(currentPoint);
   };
 
@@ -75,10 +65,10 @@ function App(props: AppProps): JSX.Element {
   return (
     <HistoryRouter history={browserHistory}>
       <Routes>
-        <Route path = {Path.MainPage} element = {<Main currentCity={currentCity} cities = {cities} onListItemHover={handleListItemHover} selectedPoint={selectedPoint} currentSort = {sortType} sortOffers = {sortOffers} onChange = {setSortType} />} />
-        <Route path = {Path.LoginPage} element = {<Login/>} />
+        <Route path = {Path.MainPage} element = {<Main cities = {cities} onListItemHover = {handleListItemHover} selectedPoint = {selectedPoint} currentSort = {sortType} sortOffers = {sortOffers} onChange = {setSortType} />} />
+        <Route path = {authorizationStatus === AuthorizationStatus.Auth ? Path.MainPage : Path.LoginPage} element = {<Login/>} />
         <Route path = {Path.FavPage} element = {<PrivateRoute authorizationStatus = {AuthorizationStatus.NoAuth}><Favourites /></PrivateRoute>} />
-        <Route path = {Path.OfferPage} element = {<Offer reviews = {reviews} selectedPoint = {selectedPoint} sortOffers={sortOffers} /*offersNearby = {offersNearby}*/ onListItemHover={handleListItemHover} />} />
+        <Route path = {Path.OfferPage} element = {<Offer selectedPoint = {selectedPoint} onListItemHover = {handleListItemHover} />} />
         <Route path = '*' element = {<PageNotFound/>} />
       </Routes>
     </HistoryRouter>

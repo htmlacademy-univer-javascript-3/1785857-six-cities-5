@@ -3,17 +3,39 @@ import { Actions, AuthorizationStatus } from '../utils/constants';
 import { CityType } from '../types/city';
 import { CardsType } from '../types/card';
 import { APIRoute } from '../utils/constants';
+import { OfferType } from '../types/offer';
+import { ReviewsType } from '../types/review';
 
-const setCityAction = createAction<CityType>(Actions.SET_CITY);
+const setCity = createAction<CityType>(Actions.SET_CITY);
 
-const getOffers = createAction<CardsType>(Actions.GET_OFFERS);
+const setOffers = createAction<CardsType>(Actions.SET_OFFERS);
 
 const requireAuthorization = createAction<AuthorizationStatus>(Actions.REQUIRE_AUTH);
 
 const setError = createAction<string | null>(Actions.SET_ERROR);
 
-const showLoader = createAction<boolean>(Actions.SHOW_LOADER);
+const showCardsLoader = createAction<boolean>(Actions.SHOW_CARDS_LOADER);
+
+const showOfferLoader = createAction<boolean>(Actions.SHOW_OFFER_LOADER);
+
+const showReviewsLoader = createAction<boolean>(Actions.SHOW_REVIEWS_LOADER);
+
+const showNearbyLoader = createAction<boolean>(Actions.SHOW_NEARBY_LOADER);
 
 const redirectToRoute = createAction<APIRoute>(Actions.REDIRECT_TO_ROOT);
 
-export { setCityAction, getOffers, requireAuthorization, setError, showLoader, redirectToRoute };
+const setOffer = createAction<OfferType>(Actions.SET_OFFER);
+
+const setReviews = createAction<ReviewsType>(Actions.SET_REVIEWS);
+
+const setNearbyOffers = createAction<CardsType>(Actions.SET_NEARBY_OFFERS);
+
+const cleanCity = createAction(Actions.CLEAN_CITY);
+
+const cleanOffer = createAction(Actions.CLEAN_OFFER);
+
+const cleanNearbyOffers = createAction(Actions.CLEAN_NEARBY_OFFERS);
+
+const cleanReviews = createAction(Actions.CLEAN_REVIEWS);
+
+export { setCity, setOffers, requireAuthorization, setError, showCardsLoader, showOfferLoader, redirectToRoute, setOffer, setReviews, setNearbyOffers, cleanOffer, cleanNearbyOffers, cleanReviews, showReviewsLoader, showNearbyLoader, cleanCity };

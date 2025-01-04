@@ -1,14 +1,14 @@
-import { OfferType } from '../utils/constants';
+import { ObjectType } from '../utils/constants';
 import { CityType } from './city';
 import { PointType } from './point';
 
 type CardType = {
-  id: number;
+  id: string;
   previewImage: string;
   isPremium: boolean;
   price: number;
   title: string;
-  type: OfferType;
+  type: ObjectType;
   isFavourite: boolean;
   rating: number;
   location: PointType;
@@ -18,3 +18,4 @@ type CardType = {
 type CardsType = CardType[];
 
 export type { CardType, CardsType };
+

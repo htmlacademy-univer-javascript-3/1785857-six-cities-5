@@ -1,4 +1,6 @@
+import { useAppSelector } from '../../hooks';
 import { ReviewsType } from '../../types/review';
+import { AuthorizationStatus } from '../../utils/constants';
 import ReviewForm from '../review-form/review-form';
 import Review from '../review/review';
 
@@ -8,19 +10,15 @@ type ReviewsProps = {
 
 function Reviews(props: ReviewsProps): JSX.Element {
 
-  const pathname: string = window.location.pathname;
+  const { reviews } = props;
 
-  const pathnameParts: string[] = pathname.split('/').filter(Boolean);
+  const authStatus: AuthorizationStatus = useAppSelector((state) => state.authorizationStatus);
 
-  const objectId: number = Number(pathnameParts.slice(1).join('/'));
+  const sortedReviewsArray = [...reviews].sort((first, second) => new Date(second.date).getTime() - new Date(first.date).getTime());
 
-  const {reviews} = props;
-
-  const currentObjectReviews = Object.values(reviews).filter((x) => x.offerId === objectId);
-
-  const arrayReviewItems = currentObjectReviews.map((review) =>
+  const arrayReviewItems = sortedReviewsArray.map((review) =>
     (
-      <Review key = {review.id} {...reviews} review = {review} />)
+      <Review key={review.id} {...reviews} review={review} />)
   );
 
   return (
@@ -29,7 +27,7 @@ function Reviews(props: ReviewsProps): JSX.Element {
       <ul className="reviews__list">
         {arrayReviewItems}
       </ul>
-      <ReviewForm />
+      {authStatus === AuthorizationStatus.Auth ? <ReviewForm /> : ''}
     </section>
   );
 }

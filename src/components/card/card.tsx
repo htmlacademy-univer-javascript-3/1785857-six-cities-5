@@ -11,16 +11,16 @@ function Card(props: CardProps): JSX.Element {
 
   const {offer, onListItemHover} = props;
 
-  const {title, price, isPremium, previewImage, id, type} = offer;
+  const {title, price, isPremium, previewImage, id, type, rating} = offer;
 
   const handleListItemHover = (event: MouseEvent<HTMLLIElement>) => {
     event.preventDefault();
-    const offerHeader = event.currentTarget.lastChild?.childNodes[2].textContent;
-    onListItemHover(`${offerHeader}`);
+    const offerId = event.currentTarget.id;
+    onListItemHover(offerId);
   };
 
   return(
-    <article className="cities__card place-card" onMouseEnter={handleListItemHover} >
+    <article className="cities__card place-card" onMouseEnter={handleListItemHover} id = {id}>
       {isPremium ? <div className="place-card__mark"><span>Premium</span></div> : null}
       <div className="cities__image-wrapper place-card__image-wrapper">
         <Link to={`/offer/${id}`}>
@@ -42,7 +42,7 @@ function Card(props: CardProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: '80%'}}></span>
+            <span style={{width: `${Math.floor(rating + 0.5) * 20}%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

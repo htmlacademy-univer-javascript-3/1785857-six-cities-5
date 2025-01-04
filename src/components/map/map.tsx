@@ -5,11 +5,12 @@ import { PointType, PointsType } from '../../types/point.ts';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../utils/constants';
 import 'leaflet/dist/leaflet.css';
 import { CityType } from '../../types/city.ts';
-import { useAppSelector } from '../../hooks/index.ts';
 import { CardsType } from '../../types/card.ts';
 
 type MapProps = {
   selectedPoint: PointType | undefined;
+  offers: CardsType;
+  currentCity: CityType;
 };
 
 const defaultCustomIcon = new Icon({
@@ -26,13 +27,9 @@ const currentCustomIcon = new Icon({
 
 function Map(props: MapProps): JSX.Element {
 
-  const offers: CardsType = useAppSelector((state) => state.offers);
+  const { offers, selectedPoint, currentCity } = props;
 
   const points: PointsType = offers.map((elem) => ({title: elem.title, latitude: elem.location.latitude, longitude: elem.location.longitude, zoom: elem.location.zoom}));
-
-  const currentCity: CityType = useAppSelector((state) => state.city);
-
-  const {selectedPoint} = props;
 
   const mapRef = useRef(null);
 
