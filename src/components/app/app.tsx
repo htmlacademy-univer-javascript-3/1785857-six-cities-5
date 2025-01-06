@@ -67,7 +67,7 @@ function App(props: AppProps): JSX.Element {
       <Routes>
         <Route path={Path.MainPage} element={<Main cities={cities} onListItemHover={handleListItemHover} selectedPoint={selectedPoint} currentSort={sortType} sortOffers={sortOffers} onChange={setSortType} />} />
         <Route path={authorizationStatus === AuthorizationStatus.Auth ? Path.MainPage : Path.LoginPage} element={<Login />} />
-        <Route path={Path.FavPage} element={<PrivateRoute authorizationStatus={AuthorizationStatus.Unknown}><Favourite /></PrivateRoute>} />
+        <Route path={Path.FavPage} element={<PrivateRoute authorizationStatus={AuthorizationStatus.Auth}><Favourite /></PrivateRoute>} />
         <Route path={Path.OfferPage} element={<Offer selectedPoint={selectedPoint} onListItemHover={handleListItemHover} />} />
         <Route path='*' element={<PageNotFound />} />
       </Routes>

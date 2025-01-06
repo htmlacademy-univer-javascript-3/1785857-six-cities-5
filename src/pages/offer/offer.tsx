@@ -12,6 +12,7 @@ import Nearby from '../../components/nearby/nearby';
 import { CardsType, CardType } from '../../types/card';
 import { CityType } from '../../types/city';
 import { AuthorizationStatus, Path, ReducerTypes } from '../../utils/constants';
+import Header from '../../components/header/header';
 
 type OfferProps = {
   selectedPoint: PointType | undefined;
@@ -100,106 +101,109 @@ function Offer(props: OfferProps): JSX.Element {
   }
 
   return (
-    <main className="page__main page__main--offer">
-      <section className="offer">
-        <div className="offer__gallery-container container">
-          <div className="offer__gallery">
-            {
-              currentOffer?.images.map((image) => (
-                <div className="offer__image-wrapper" key={image}>
-                  <img
-                    className="offer__image"
-                    src={image}
-                    alt="Photo studio"
-                  />
-                </div>
-              )
-              )
-            }
+    <div className="page">
+      <Header />
+      <main className="page__main page__main--offer">
+        <section className="offer">
+          <div className="offer__gallery-container container">
+            <div className="offer__gallery">
+              {
+                currentOffer?.images.map((image) => (
+                  <div className="offer__image-wrapper" key={image}>
+                    <img
+                      className="offer__image"
+                      src={image}
+                      alt="Photo studio"
+                    />
+                  </div>
+                )
+                )
+              }
+            </div>
           </div>
-        </div>
-        <div className="offer__container container">
-          <div className="offer__wrapper">
-            {currentOffer?.isPremium ? <div className="offer__mark"><span>Premium</span></div> : ''}
-            <div className="offer__name-wrapper">
-              <h1 className="offer__name">
-                {currentOffer?.title}
-              </h1>
-              <button className={`offer__bookmark-button button ${currentOffer?.isFavorite ? 'offer__bookmark-button--active' : ''}`} type="button" onClick={toggleFavouriteStatus}>
-                <svg className="offer__bookmark-icon" width="31" height="33">
-                  <use xlinkHref="#icon-bookmark"></use>
-                </svg>
-                <span className="visually-hidden">To bookmarks</span>
-              </button>
-            </div>
-            <div className="offer__rating rating">
-              <div className="offer__stars rating__stars">
-                <span style={{ width: `${Math.floor(!currentOffer ? 0 : currentOffer?.rating + 0.5) * 20}%` }}></span>
-                <span className="visually-hidden">Rating</span>
+          <div className="offer__container container">
+            <div className="offer__wrapper">
+              {currentOffer?.isPremium ? <div className="offer__mark"><span>Premium</span></div> : ''}
+              <div className="offer__name-wrapper">
+                <h1 className="offer__name">
+                  {currentOffer?.title}
+                </h1>
+                <button className={`offer__bookmark-button button ${currentOffer?.isFavorite ? 'offer__bookmark-button--active' : ''}`} type="button" onClick={toggleFavouriteStatus}>
+                  <svg className="offer__bookmark-icon" width="31" height="33">
+                    <use xlinkHref="#icon-bookmark"></use>
+                  </svg>
+                  <span className="visually-hidden">To bookmarks</span>
+                </button>
               </div>
-              <span className="offer__rating-value rating__value">{currentOffer?.rating}</span>
-            </div>
-            <ul className="offer__features">
-              <li className="offer__feature offer__feature--entire">
-                {currentOffer?.type}
-              </li>
-              <li className="offer__feature offer__feature--bedrooms">
-                {currentOffer?.bedrooms}
-              </li>
-              <li className="offer__feature offer__feature--adults">
-                {currentOffer?.maxAdults}
-              </li>
-            </ul>
-            <div className="offer__price">
-              <b className="offer__price-value">&euro;{currentOffer?.price}</b>
-              <span className="offer__price-text">&nbsp;night</span>
-            </div>
-            <div className="offer__inside">
-              <h2 className="offer__inside-title">What&apos;s inside</h2>
-              <ul className="offer__inside-list">
-                {
-                  currentOffer?.goods.map((item) => (
-                    <li className="offer__inside-item" key={item}>{item}</li>
-                  )
-                  )
-                }
+              <div className="offer__rating rating">
+                <div className="offer__stars rating__stars">
+                  <span style={{ width: `${Math.floor(!currentOffer ? 0 : currentOffer?.rating + 0.5) * 20}%` }}></span>
+                  <span className="visually-hidden">Rating</span>
+                </div>
+                <span className="offer__rating-value rating__value">{currentOffer?.rating}</span>
+              </div>
+              <ul className="offer__features">
+                <li className="offer__feature offer__feature--entire">
+                  {currentOffer?.type}
+                </li>
+                <li className="offer__feature offer__feature--bedrooms">
+                  {currentOffer?.bedrooms}
+                </li>
+                <li className="offer__feature offer__feature--adults">
+                  {currentOffer?.maxAdults}
+                </li>
               </ul>
-            </div>
-            <div className="offer__host">
-              <h2 className="offer__host-title">Meet the host</h2>
-              <div className="offer__host-user user">
-                <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
-                  <img className="offer__avatar user__avatar" src={currentOffer?.host.avatarUrl} width="74" height="74" alt="Host avatar" />
+              <div className="offer__price">
+                <b className="offer__price-value">&euro;{currentOffer?.price}</b>
+                <span className="offer__price-text">&nbsp;night</span>
+              </div>
+              <div className="offer__inside">
+                <h2 className="offer__inside-title">What&apos;s inside</h2>
+                <ul className="offer__inside-list">
+                  {
+                    currentOffer?.goods.map((item) => (
+                      <li className="offer__inside-item" key={item}>{item}</li>
+                    )
+                    )
+                  }
+                </ul>
+              </div>
+              <div className="offer__host">
+                <h2 className="offer__host-title">Meet the host</h2>
+                <div className="offer__host-user user">
+                  <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
+                    <img className="offer__avatar user__avatar" src={currentOffer?.host.avatarUrl} width="74" height="74" alt="Host avatar" />
+                  </div>
+                  <span className="offer__user-name">
+                    {currentOffer?.host.name}
+                  </span>
+                  <span className="offer__user-status">
+                    {currentOffer?.host.isPro}
+                  </span>
                 </div>
-                <span className="offer__user-name">
-                  {currentOffer?.host.name}
-                </span>
-                <span className="offer__user-status">
-                  {currentOffer?.host.isPro}
-                </span>
+                <div className="offer__description">
+                  <p className="offer__text">
+                    {currentOffer?.description}
+                  </p>
+                </div>
               </div>
-              <div className="offer__description">
-                <p className="offer__text">
-                  {currentOffer?.description}
-                </p>
-              </div>
+              <Reviews reviews={reviews} />
             </div>
-            <Reviews reviews={reviews} />
           </div>
+          <section className="offer__map map">
+            <Map selectedPoint={selectedPoint} offers={offersNearbyPlusCurrent} currentCity={currentCity} />
+          </section>
+        </section>
+        <div className="container">
+          <section className="near-places places">
+            <h2 className="near-places__title">Other places in the neighbourhood</h2>
+            <div className="near-places__list places__list">
+              <Nearby onListItemHover={onListItemHover} />
+            </div>
+          </section>
         </div>
-        <section className="offer__map map">
-          <Map selectedPoint={selectedPoint} offers={offersNearbyPlusCurrent} currentCity={currentCity} />
-        </section>
-      </section>
-      <div className="container">
-        <section className="near-places places">
-          <h2 className="near-places__title">Other places in the neighbourhood</h2>
-          <div className="near-places__list places__list">
-            <Nearby onListItemHover={onListItemHover} />
-          </div>
-        </section>
-      </div>
-    </main>
+      </main>
+    </div>
   );
 }
 
