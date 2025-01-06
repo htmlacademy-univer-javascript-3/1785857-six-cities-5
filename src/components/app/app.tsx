@@ -1,8 +1,8 @@
-import Main from '../main/main';
-import Login from '../login/login';
-import Favourites from '../favourites/favourites';
-import Offer from '../offer/offer';
-import PageNotFound from '../404/404';
+import Main from '../../pages/main/main';
+import Login from '../../pages/login/login';
+import Favourite from '../../pages/favourite/favourite';
+import Offer from '../../pages/offer/offer';
+import PageNotFound from '../../pages/404/404';
 import { Route, Routes } from 'react-router-dom';
 import { AuthorizationStatus, Filters, Path, ReducerTypes } from '../../utils/constants';
 import PrivateRoute from '../private-route/private-route';
@@ -52,8 +52,6 @@ function App(props: AppProps): JSX.Element {
       case 'TopRated':
         return b.rating - a.rating;
       default:
-        // eslint-disable-next-line no-console
-        console.log('popular');
         return 0;
     }
   }), [sortType]);
@@ -69,7 +67,7 @@ function App(props: AppProps): JSX.Element {
       <Routes>
         <Route path={Path.MainPage} element={<Main cities={cities} onListItemHover={handleListItemHover} selectedPoint={selectedPoint} currentSort={sortType} sortOffers={sortOffers} onChange={setSortType} />} />
         <Route path={authorizationStatus === AuthorizationStatus.Auth ? Path.MainPage : Path.LoginPage} element={<Login />} />
-        <Route path={Path.FavPage} element={<PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}><Favourites /></PrivateRoute>} />
+        <Route path={Path.FavPage} element={<PrivateRoute authorizationStatus={AuthorizationStatus.Unknown}><Favourite /></PrivateRoute>} />
         <Route path={Path.OfferPage} element={<Offer selectedPoint={selectedPoint} onListItemHover={handleListItemHover} />} />
         <Route path='*' element={<PageNotFound />} />
       </Routes>

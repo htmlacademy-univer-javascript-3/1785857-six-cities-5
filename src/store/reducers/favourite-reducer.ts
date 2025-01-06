@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setFavourite } from '../actions';
+import { cleanFavouriteOffers, setFavouriteOffers } from '../actions';
 import { FavouriteState } from '../../types/state';
 
 const initialState: FavouriteState = {
@@ -9,8 +9,10 @@ const initialState: FavouriteState = {
 
 const favouriteReducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(setFavourite, (state, action) => {
+    .addCase(setFavouriteOffers, (state, action) => {
       state.favourite = action.payload;
+    }).addCase(cleanFavouriteOffers, (state) => {
+      state.favourite = [];
     });
 });
 

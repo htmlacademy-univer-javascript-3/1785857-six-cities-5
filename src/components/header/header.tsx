@@ -1,7 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { logoutAction } from '../../store/api-actions';
+import { getFavouriteOffersAction, logoutAction } from '../../store/api-actions';
 import { APIRoute, AuthorizationStatus, Path, ReducerTypes } from '../../utils/constants';
+import { useEffect } from 'react';
 
 function Header(): JSX.Element {
 
@@ -15,11 +16,11 @@ function Header(): JSX.Element {
 
   const favourite = useAppSelector((state) => state[ReducerTypes.FAVOURITE_REDUCER].favourite);
 
-  /* useEffect(() => {
-    if (isAuthorized) {
-      dispatch(fetchFavorites());
+  useEffect(() => {
+    if (authStatus === AuthorizationStatus.Auth) {
+      dispatch(getFavouriteOffersAction());
     }
-  }, [dispatch, authStatus, userData]); */
+  }, [dispatch, authStatus, userData]);
 
   const handleLogout = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -58,7 +59,7 @@ function Header(): JSX.Element {
             <nav className="header__nav">
               <ul className="header__nav-list">
                 <li className="header__nav-item">
-                  <Link className="header__nav-link" to="/login" >
+                  <Link className="header__nav-link" to={Path.LoginPage} >
                     <span className="header__signout">Sign in</span>
                   </Link>
                 </li>

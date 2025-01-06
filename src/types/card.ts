@@ -9,7 +9,7 @@ type CardType = {
   price: number;
   title: string;
   type: ObjectType;
-  isFavourite: boolean;
+  isFavorite: boolean;
   rating: number;
   location: PointType;
   city: CityType;

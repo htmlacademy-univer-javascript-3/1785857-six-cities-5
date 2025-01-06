@@ -3,8 +3,8 @@ import { CitiesType } from '../types/city';
 enum Path {
   MainPage = '/',
   LoginPage = '/login',
-  FavPage = '/favourites',
-  OfferPage = '/offer/:id'
+  FavPage = '/favorite',
+  OfferPage = '/offer/:id',
 }
 
 enum AuthorizationStatus {
@@ -18,6 +18,10 @@ enum ObjectType {
   Room = 'room',
   House = 'house',
   Hotel = 'hotel'
+}
+
+enum cssClass {
+  PlaceCard = 'place-card',
 }
 
 const cities: CitiesType = [
@@ -102,7 +106,8 @@ enum Actions {
   CLEAN_NEARBY_OFFERS = 'CLEAN_NEARBY_OFFERS',
   CLEAN_REVIEWS = 'CLEAN_REVIEWS',
   CLEAN_CITY = 'CLEAN_CITY',
-  SET_FAVOURITE = 'SET_FAVOURITE',
+  SET_FAVOURITE_OFFERS = 'SET_FAVOURITE_OFFERS',
+  CLEAN_FAVOURITE_OFFERS = 'CLEAN_FAVOURITE_OFFERS',
   SHOW_FAVOURITE_LOADER = 'SHOW_FAVOURITE_LOADER',
   SET_USER_DATA = 'SET_USER_DATA',
   CLEAN_USER_DATA = 'CLEAN_USER_DATA'
@@ -119,6 +124,8 @@ enum APIActions {
   GET_NEARBY_OFFERS = 'GET_NEARBY_OFFERS',
   GET_ERROR_CLEANED = 'GET_ERROR_CLEANED',
   CREATE_COMMENT = 'CREATE_COMMENT',
+  TOGGLE_FAVOURITE = 'TOGGLE_FAVOURITE',
+  GET_FAVOURITE = 'GET_FAVOURITE'
 }
 
 enum Filters {
@@ -135,6 +142,7 @@ enum APIRoute {
   Logout = '/logout',
   Comments = '/comments',
   Main = '/',
+  Favourite = '/favorite',
 }
 
 enum ReducerTypes {
@@ -149,5 +157,5 @@ enum ReducerTypes {
 
 const TIMEOUT_SHOW_ERROR = 2000;
 
-export { Path, AuthorizationStatus, ObjectType, URL_MARKER_DEFAULT, URL_MARKER_CURRENT, cities, Actions, Filters, APIRoute, TIMEOUT_SHOW_ERROR, APIActions, ReducerTypes };
+export { Path, AuthorizationStatus, ObjectType, URL_MARKER_DEFAULT, URL_MARKER_CURRENT, cities, Actions, Filters, APIRoute, TIMEOUT_SHOW_ERROR, APIActions, ReducerTypes, cssClass };
 

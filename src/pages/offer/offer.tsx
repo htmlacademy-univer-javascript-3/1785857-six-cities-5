@@ -1,17 +1,17 @@
 import { ReviewsType } from '../../types/review';
-import Reviews from '../reviews/reviews';
-import Map from '../map/map';
+import Reviews from '../../components/reviews/reviews';
+import Map from '../../components/map/map';
 import { PointType } from '../../types/point';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { OfferType } from '../../types/offer';
-import { Navigate, useParams } from 'react-router-dom';
-import { getNearbyOffersAction, getOfferAction, getReviewsAction } from '../../store/api-actions';
-import { useEffect } from 'react';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { getNearbyOffersAction, getOfferAction, getReviewsAction, toggleFavouriteOffersAction } from '../../store/api-actions';
+import { useCallback, useEffect } from 'react';
 import { cleanCity, cleanNearbyOffers, cleanOffer, cleanReviews, setCity } from '../../store/actions';
-import Nearby from '../nearby/nearby';
+import Nearby from '../../components/nearby/nearby';
 import { CardsType, CardType } from '../../types/card';
 import { CityType } from '../../types/city';
-import { ReducerTypes } from '../../utils/constants';
+import { AuthorizationStatus, Path, ReducerTypes } from '../../utils/constants';
 
 type OfferProps = {
   selectedPoint: PointType | undefined;
@@ -23,6 +23,8 @@ function Offer(props: OfferProps): JSX.Element {
   const { selectedPoint, onListItemHover } = props;
 
   const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
 
   const currentOfferId: string | undefined = useParams().id; // location.pathname.split('/').pop();
 
@@ -41,6 +43,8 @@ function Offer(props: OfferProps): JSX.Element {
   const offersNearbyPlusCurrent: CardsType = offersNearby.concat(currentOfferCard!);
 
   const error = useAppSelector((state) => state[ReducerTypes.ERROR_REDUCER].error);
+
+  const authorizationStatus = useAppSelector(((state) => state[ReducerTypes.USER_REDUCER].authorizationStatus));
 
   useEffect(() => {
     if (currentOfferId) {
@@ -78,6 +82,19 @@ function Offer(props: OfferProps): JSX.Element {
     };
   }, [dispatch, currentOffer]);
 
+  const toggleFavouriteStatus = useCallback(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth && currentOffer) {
+      dispatch(
+        toggleFavouriteOffersAction({
+          id: currentOffer.id,
+          favState: !currentOffer.isFavorite,
+        })
+      );
+    } else {
+      navigate(Path.LoginPage);
+    }
+  }, [authorizationStatus, currentOffer, dispatch, navigate]);
+
   if (error) {
     return <Navigate to={'/404'} />;
   }
@@ -108,7 +125,7 @@ function Offer(props: OfferProps): JSX.Element {
               <h1 className="offer__name">
                 {currentOffer?.title}
               </h1>
-              <button className="offer__bookmark-button button" type="button">
+              <button className={`offer__bookmark-button button ${currentOffer?.isFavorite ? 'offer__bookmark-button--active' : ''}`} type="button" onClick={toggleFavouriteStatus}>
                 <svg className="offer__bookmark-icon" width="31" height="33">
                   <use xlinkHref="#icon-bookmark"></use>
                 </svg>
@@ -117,7 +134,7 @@ function Offer(props: OfferProps): JSX.Element {
             </div>
             <div className="offer__rating rating">
               <div className="offer__stars rating__stars">
-                <span style={{width: `${Math.floor(!currentOffer ? 0 : currentOffer?.rating + 0.5) * 20}%`}}></span>
+                <span style={{ width: `${Math.floor(!currentOffer ? 0 : currentOffer?.rating + 0.5) * 20}%` }}></span>
                 <span className="visually-hidden">Rating</span>
               </div>
               <span className="offer__rating-value rating__value">{currentOffer?.rating}</span>
