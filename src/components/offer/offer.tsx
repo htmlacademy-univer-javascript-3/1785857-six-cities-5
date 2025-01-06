@@ -11,6 +11,7 @@ import { cleanCity, cleanNearbyOffers, cleanOffer, cleanReviews, setCity } from 
 import Nearby from '../nearby/nearby';
 import { CardsType, CardType } from '../../types/card';
 import { CityType } from '../../types/city';
+import { ReducerTypes } from '../../utils/constants';
 
 type OfferProps = {
   selectedPoint: PointType | undefined;
@@ -25,21 +26,21 @@ function Offer(props: OfferProps): JSX.Element {
 
   const currentOfferId: string | undefined = useParams().id; // location.pathname.split('/').pop();
 
-  const currentCity: CityType = useAppSelector((state) => state.city);
+  const currentCity: CityType = useAppSelector((state) => state[ReducerTypes.CITY_REDUCER].city);
 
-  const offers: CardsType = useAppSelector((state) => state.offers);
+  const offers: CardsType = useAppSelector((state) => state[ReducerTypes.OFFERS_REDUCER].offers);
 
-  const reviews: ReviewsType = useAppSelector((state) => state.reviews);
+  const reviews: ReviewsType = useAppSelector((state) => state[ReducerTypes.REVIEWS_REDUCER].reviews);
 
-  const offersNearby: CardsType = useAppSelector((state) => state.offersNearby);
+  const offersNearby: CardsType = useAppSelector((state) => state[ReducerTypes.OFFERS_REDUCER].offersNearby);
 
-  const currentOffer: OfferType | null = useAppSelector((state) => state.offer);
+  const currentOffer: OfferType | null = useAppSelector((state) => state[ReducerTypes.OFFER_REDUCER].offer);
 
   const currentOfferCard: CardType | undefined = offers.find((item) => item.id === currentOfferId);
 
   const offersNearbyPlusCurrent: CardsType = offersNearby.concat(currentOfferCard!);
 
-  const error = useAppSelector((state) => state.error);
+  const error = useAppSelector((state) => state[ReducerTypes.ERROR_REDUCER].error);
 
   useEffect(() => {
     if (currentOfferId) {

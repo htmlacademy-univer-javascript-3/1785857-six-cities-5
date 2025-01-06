@@ -19,8 +19,12 @@ function Card(props: CardProps): JSX.Element {
     onListItemHover(offerId);
   };
 
+  const handleMouseLeave = () => {
+    onListItemHover('');
+  };
+
   return(
-    <article className="cities__card place-card" onMouseEnter={handleListItemHover} id = {id}>
+    <article className="cities__card place-card" onMouseEnter={handleListItemHover} onMouseLeave={handleMouseLeave} id = {id}>
       {isPremium ? <div className="place-card__mark"><span>Premium</span></div> : null}
       <div className="cities__image-wrapper place-card__image-wrapper">
         <Link to={`/offer/${id}`}>

@@ -4,15 +4,15 @@ import Favourites from '../favourites/favourites';
 import Offer from '../offer/offer';
 import PageNotFound from '../404/404';
 import { Route, Routes } from 'react-router-dom';
-import { AuthorizationStatus, Filters, Path } from '../../utils/constants';
+import { AuthorizationStatus, Filters, Path, ReducerTypes } from '../../utils/constants';
 import PrivateRoute from '../private-route/private-route';
 import { PointsType, PointType } from '../../types/point';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { CitiesType } from '../../types/city';
 import { CardsType } from '../../types/card';
 import { FilterType } from '../../types/filter';
 import { useAppSelector } from '../../hooks';
-import Loader from '../component/loader';
+import Loader from '../loader/loader';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../utils/browser-history';
 
@@ -22,13 +22,13 @@ type AppProps = {
 
 function App(props: AppProps): JSX.Element {
 
-  const offers = useAppSelector((state) => state.offers);
+  const offers = useAppSelector((state) => state[ReducerTypes.OFFERS_REDUCER].offers);
 
-  const points: PointsType = offers.map((elem) => ({title: elem.title, latitude: elem.location.latitude, longitude: elem.location.longitude, zoom: elem.location.zoom, id: elem.id}));
+  const points: PointsType = offers.map((elem) => ({ title: elem.title, latitude: elem.location.latitude, longitude: elem.location.longitude, zoom: elem.location.zoom, id: elem.id }));
 
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const authorizationStatus = useAppSelector((state) => state[ReducerTypes.USER_REDUCER].authorizationStatus);
 
-  const isOffersDataLoading = useAppSelector((state) => state.areCardsLoading);
+  const isOffersDataLoading = useAppSelector((state) => state[ReducerTypes.OFFERS_REDUCER].areCardsLoading);
 
   const [selectedPoint, setSelectedPoint] = useState<PointType | undefined>(
     undefined
@@ -36,14 +36,14 @@ function App(props: AppProps): JSX.Element {
 
   const [sortType, setSortType] = useState<FilterType>(Filters.Popular);
 
-  const {cities} = props;
+  const { cities } = props;
 
-  const handleListItemHover = (listItemId: string) => {
+  const handleListItemHover = useCallback((listItemId: string) => {
     const currentPoint = points.find((point) => point.id === listItemId);
     setSelectedPoint(currentPoint);
-  };
+  }, [points]);
 
-  const sortOffers = (array: CardsType) => [...array].sort((a, b) => {
+  const sortOffers = useCallback((array: CardsType) => [...array].sort((a, b) => {
     switch (sortType) {
       case 'LowToHigh':
         return a.price - b.price;
@@ -52,9 +52,11 @@ function App(props: AppProps): JSX.Element {
       case 'TopRated':
         return b.rating - a.rating;
       default:
+        // eslint-disable-next-line no-console
+        console.log('popular');
         return 0;
     }
-  });
+  }), [sortType]);
 
   if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
     return (
@@ -65,11 +67,11 @@ function App(props: AppProps): JSX.Element {
   return (
     <HistoryRouter history={browserHistory}>
       <Routes>
-        <Route path = {Path.MainPage} element = {<Main cities = {cities} onListItemHover = {handleListItemHover} selectedPoint = {selectedPoint} currentSort = {sortType} sortOffers = {sortOffers} onChange = {setSortType} />} />
-        <Route path = {authorizationStatus === AuthorizationStatus.Auth ? Path.MainPage : Path.LoginPage} element = {<Login/>} />
-        <Route path = {Path.FavPage} element = {<PrivateRoute authorizationStatus = {AuthorizationStatus.NoAuth}><Favourites /></PrivateRoute>} />
-        <Route path = {Path.OfferPage} element = {<Offer selectedPoint = {selectedPoint} onListItemHover = {handleListItemHover} />} />
-        <Route path = '*' element = {<PageNotFound/>} />
+        <Route path={Path.MainPage} element={<Main cities={cities} onListItemHover={handleListItemHover} selectedPoint={selectedPoint} currentSort={sortType} sortOffers={sortOffers} onChange={setSortType} />} />
+        <Route path={authorizationStatus === AuthorizationStatus.Auth ? Path.MainPage : Path.LoginPage} element={<Login />} />
+        <Route path={Path.FavPage} element={<PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}><Favourites /></PrivateRoute>} />
+        <Route path={Path.OfferPage} element={<Offer selectedPoint={selectedPoint} onListItemHover={handleListItemHover} />} />
+        <Route path='*' element={<PageNotFound />} />
       </Routes>
     </HistoryRouter>
   );
