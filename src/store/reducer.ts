@@ -1,69 +1,23 @@
-import { createReducer } from '@reduxjs/toolkit';
-import { StateType } from '../types/state';
-import { AuthorizationStatus, cities } from '../utils/constants';
-import { setCity, setOffers, requireAuthorization, setError, showCardsLoader, showOfferLoader, setOffer, setReviews, setNearbyOffers, cleanNearbyOffers, cleanReviews, cleanOffer, showNearbyLoader, showReviewsLoader, cleanCity } from './actions';
+import { combineReducers } from '@reduxjs/toolkit';
+import { cityReducer } from './reducers/city-reducer';
+import { userReducer } from './reducers/user-reducer';
+import { offersReducer } from './reducers/offers-reducer';
+import { offerReducer } from './reducers/offer-reducer';
+import { reviewsReducer } from './reducers/reviews-reducer';
+import { favouriteReducer } from './reducers/favourite-reducer';
+import { ReducerTypes } from '../utils/constants';
+import { errorReducer } from './reducers/error-reducer';
 
-const initialState: StateType = {
-  city: cities[0],
-  offers: [],
-  offersNearby: [],
-  reviews: [],
-  offer: null,
-  authorizationStatus: AuthorizationStatus.Unknown,
-  areCardsLoading: false,
-  isOfferLoading: false,
-  areReviewsLoading: false,
-  isNearbyLoading: false,
-  error: null,
-};
+export type FullState = ReturnType<typeof reducer>;
 
-const reducer = createReducer(initialState, (builder) => {
-  builder
-    .addCase(setCity, (state, action) => {
-      state.city = action.payload;
-    })
-    .addCase(setOffers, (state, action) => {
-      state.offers = action.payload;
-    })
-    .addCase(showCardsLoader, (state, action) => {
-      state.areCardsLoading = action.payload;
-    })
-    .addCase(showOfferLoader, (state, action) => {
-      state.isOfferLoading = action.payload;
-    })
-    .addCase(showReviewsLoader, (state, action) => {
-      state.areReviewsLoading = action.payload;
-    })
-    .addCase(showNearbyLoader, (state, action) => {
-      state.isNearbyLoading = action.payload;
-    })
-    .addCase(requireAuthorization, (state, action) => {
-      state.authorizationStatus = action.payload;
-    })
-    .addCase(setError, (state, action) => {
-      state.error = action.payload;
-    })
-    .addCase(setOffer, (state, action) => {
-      state.offer = action.payload;
-    })
-    .addCase(setReviews, (state, action) => {
-      state.reviews = action.payload;
-    })
-    .addCase(setNearbyOffers, (state, action) => {
-      state.offersNearby = action.payload;
-    })
-    .addCase(cleanOffer, (state) => {
-      state.offer = null;
-    })
-    .addCase(cleanReviews, (state) => {
-      state.reviews = [];
-    })
-    .addCase(cleanNearbyOffers, (state) => {
-      state.offersNearby = [];
-    })
-    .addCase(cleanCity, (state) => {
-      state.city = cities[0];
-    });
+const reducer = combineReducers({
+  [ReducerTypes.USER_REDUCER]: userReducer,
+  [ReducerTypes.CITY_REDUCER]: cityReducer,
+  [ReducerTypes.OFFERS_REDUCER]: offersReducer,
+  [ReducerTypes.OFFER_REDUCER]: offerReducer,
+  [ReducerTypes.REVIEWS_REDUCER]: reviewsReducer,
+  [ReducerTypes.FAVOURITE_REDUCER]: favouriteReducer,
+  [ReducerTypes.ERROR_REDUCER]: errorReducer,
 });
 
-export { reducer };
+export {reducer};

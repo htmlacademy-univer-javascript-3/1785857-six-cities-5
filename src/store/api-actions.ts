@@ -2,8 +2,8 @@ import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state.js';
 import { CardsType } from '../types/card.js';
-import { setOffers, requireAuthorization, setError, showCardsLoader, showOfferLoader, redirectToRoute, setOffer, setReviews, setNearbyOffers, showReviewsLoader, showNearbyLoader } from './actions';
-import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../utils/constants.js';
+import { setOffers, requireAuthorization, setError, showCardsLoader, showOfferLoader, redirectToRoute, setOffer, setReviews, setNearbyOffers, showReviewsLoader, showNearbyLoader, setUserData, cleanUserData } from './actions';
+import { APIRoute, AuthorizationStatus, ReducerTypes, TIMEOUT_SHOW_ERROR } from '../utils/constants.js';
 import { APIActions } from '../utils/constants';
 import { AuthType } from '../types/auth.js';
 import { UserType } from '../types/user.js';
@@ -65,11 +65,13 @@ export const loginAction = createAsyncThunk<void, AuthType, {
 }>(
   APIActions.LOGIN,
   async ({ email, password }, { dispatch, extra: api }) => {
-    const { data: { token } } = await api.post<UserType>(APIRoute.Login, { email, password });
-    saveToken(token);
-    localStorage.setItem('email', email);
+    const { data } = await api.post<UserType>(APIRoute.Login, { email, password });
+    saveToken(data.token);
+    dispatch(setUserData(data));
+    localStorage.setItem('email', data.email);
+    localStorage.setItem('avatarUrl', data.avatarUrl);
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
-    dispatch(redirectToRoute(APIRoute.Offers));
+    dispatch(redirectToRoute(APIRoute.Main));
   },
 );
 
@@ -82,6 +84,9 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   async (_arg, { dispatch, extra: api }) => {
     await api.delete(APIRoute.Logout);
     dropToken();
+    dispatch(cleanUserData());
+    localStorage.removeItem('email');
+    localStorage.removeItem('avatarUrl');
     dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
   },
 );
@@ -109,8 +114,8 @@ export const createCommentAction = createAsyncThunk<void, CommentType, {
   async ({ id, comment, rating }, { dispatch, getState, extra: api }) => {
     const {status} = await api.post<ReviewType>(`${APIRoute.Comments}/${id}`, {comment, rating});
     const state = getState();
-    if (status === Number(StatusCodes.CREATED) && state.offer) {
-      dispatch(getReviewsAction(state.offer?.id));
+    if (status === Number(StatusCodes.CREATED) && state[ReducerTypes.OFFER_REDUCER].offer) {
+      dispatch(getReviewsAction(state[ReducerTypes.OFFER_REDUCER].offer?.id));
     }
   },
 );

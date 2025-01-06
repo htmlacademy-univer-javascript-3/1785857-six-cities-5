@@ -5,6 +5,7 @@ import { CardsType } from '../types/card';
 import { APIRoute } from '../utils/constants';
 import { OfferType } from '../types/offer';
 import { ReviewsType } from '../types/review';
+import { UserType } from '../types/user';
 
 const setCity = createAction<CityType>(Actions.SET_CITY);
 
@@ -38,4 +39,12 @@ const cleanNearbyOffers = createAction(Actions.CLEAN_NEARBY_OFFERS);
 
 const cleanReviews = createAction(Actions.CLEAN_REVIEWS);
 
-export { setCity, setOffers, requireAuthorization, setError, showCardsLoader, showOfferLoader, redirectToRoute, setOffer, setReviews, setNearbyOffers, cleanOffer, cleanNearbyOffers, cleanReviews, showReviewsLoader, showNearbyLoader, cleanCity };
+const setFavourite = createAction<CardsType>(Actions.SET_FAVOURITE);
+
+const showFavouriteLoader = createAction<boolean>(Actions.SHOW_FAVOURITE_LOADER);
+
+const setUserData = createAction<UserType>(Actions.SET_USER_DATA);
+
+const cleanUserData = createAction(Actions.CLEAN_USER_DATA);
+
+export { setCity, setOffers, requireAuthorization, setError, showCardsLoader, showOfferLoader, redirectToRoute, setOffer, setReviews, setNearbyOffers, cleanOffer, cleanNearbyOffers, cleanReviews, showReviewsLoader, showNearbyLoader, cleanCity, setFavourite, showFavouriteLoader, setUserData, cleanUserData };

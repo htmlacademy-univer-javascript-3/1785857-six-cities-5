@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { APIRoute } from '../../utils/constants';
+import { APIRoute, ReducerTypes } from '../../utils/constants';
 import { useAppSelector } from '../../hooks';
 import { MouseEvent } from 'react';
 
@@ -17,11 +17,15 @@ function Nearby(props: NearbyProps): JSX.Element {
     onListItemHover(offerId);
   };
 
-  const offersNearby = useAppSelector((state) => state.offersNearby);
+  const handleMouseLeave = () => {
+    onListItemHover('');
+  };
+
+  const offersNearby = useAppSelector((state) => state[ReducerTypes.OFFERS_REDUCER].offersNearby);
 
   const offersNearbyCards = Object.values(offersNearby).map((offer) =>
     (
-      <article className="near-places__card place-card" key = {offer.id} id = {offer.id} onMouseEnter = {handleListItemHover}>
+      <article className="near-places__card place-card" key = {offer.id} id = {offer.id} onMouseEnter = {handleListItemHover} onMouseLeave = {handleMouseLeave}>
         <div className="near-places__image-wrapper place-card__image-wrapper">
           <Link to={`${APIRoute.Offer}/${offer.id}`}>
             <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image" />

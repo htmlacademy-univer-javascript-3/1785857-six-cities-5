@@ -101,7 +101,11 @@ enum Actions {
   CLEAN_OFFER = 'CLEAN_OFFER',
   CLEAN_NEARBY_OFFERS = 'CLEAN_NEARBY_OFFERS',
   CLEAN_REVIEWS = 'CLEAN_REVIEWS',
-  CLEAN_CITY = 'CLEAN_CITY'
+  CLEAN_CITY = 'CLEAN_CITY',
+  SET_FAVOURITE = 'SET_FAVOURITE',
+  SHOW_FAVOURITE_LOADER = 'SHOW_FAVOURITE_LOADER',
+  SET_USER_DATA = 'SET_USER_DATA',
+  CLEAN_USER_DATA = 'CLEAN_USER_DATA'
 }
 
 enum APIActions {
@@ -129,10 +133,21 @@ enum APIRoute {
   Offer = '/offer',
   Login = '/login',
   Logout = '/logout',
-  Comments = '/comments'
+  Comments = '/comments',
+  Main = '/',
+}
+
+enum ReducerTypes {
+  CITY_REDUCER = 'CITY_REDUCER',
+  ERROR_REDUCER = 'ERROR_REDUCER',
+  FAVOURITE_REDUCER = 'FAVOURITE_REDUCER',
+  OFFER_REDUCER = 'OFFER_REDUCER',
+  OFFERS_REDUCER = 'OFFERS_REDUCER',
+  REVIEWS_REDUCER = 'REVIEWS_REDUCER',
+  USER_REDUCER = 'USER_REDUCER',
 }
 
 const TIMEOUT_SHOW_ERROR = 2000;
 
-export { Path, AuthorizationStatus, ObjectType, URL_MARKER_DEFAULT, URL_MARKER_CURRENT, cities, Actions, Filters, APIRoute, TIMEOUT_SHOW_ERROR, APIActions };
+export { Path, AuthorizationStatus, ObjectType, URL_MARKER_DEFAULT, URL_MARKER_CURRENT, cities, Actions, Filters, APIRoute, TIMEOUT_SHOW_ERROR, APIActions, ReducerTypes };
 

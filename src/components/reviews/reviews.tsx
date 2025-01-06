@@ -1,6 +1,6 @@
 import { useAppSelector } from '../../hooks';
 import { ReviewsType } from '../../types/review';
-import { AuthorizationStatus } from '../../utils/constants';
+import { AuthorizationStatus, ReducerTypes } from '../../utils/constants';
 import ReviewForm from '../review-form/review-form';
 import Review from '../review/review';
 
@@ -12,7 +12,7 @@ function Reviews(props: ReviewsProps): JSX.Element {
 
   const { reviews } = props;
 
-  const authStatus: AuthorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const authStatus: AuthorizationStatus = useAppSelector((state) => state[ReducerTypes.USER_REDUCER].authorizationStatus);
 
   const sortedReviewsArray = [...reviews].sort((first, second) => new Date(second.date).getTime() - new Date(first.date).getTime());
 

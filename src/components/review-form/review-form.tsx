@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { createCommentAction } from '../../store/api-actions';
+import { ReducerTypes } from '../../utils/constants';
 
 function ReviewForm(): JSX.Element {
 
@@ -8,7 +9,7 @@ function ReviewForm(): JSX.Element {
   const [reviewRating, setReviewRating] = useState(0);
   const [submitDisabled, setSubmitDisabled] = useState(true);
 
-  const currentOfferId = useAppSelector((state) => state.offer?.id);
+  const currentOfferId = useAppSelector((state) => state[ReducerTypes.OFFER_REDUCER].offer?.id);
 
   const dispatch = useAppDispatch();
 
