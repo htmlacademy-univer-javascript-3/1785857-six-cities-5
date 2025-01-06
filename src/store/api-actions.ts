@@ -72,6 +72,7 @@ export const loginAction = createAsyncThunk<void, AuthType, {
     localStorage.setItem('avatarUrl', data.avatarUrl);
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
     dispatch(redirectToRoute(APIRoute.Main));
+    dispatch(getOffersAction());
   },
 );
 
@@ -89,6 +90,7 @@ export const logoutAction = createAsyncThunk<void, undefined, {
     localStorage.removeItem('avatarUrl');
     dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
     dispatch(cleanFavouriteOffers());
+    dispatch(getOffersAction());
   },
 );
 
