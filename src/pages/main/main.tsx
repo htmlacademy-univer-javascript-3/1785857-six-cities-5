@@ -1,15 +1,16 @@
 import { JSX } from 'react/jsx-runtime';
-import Cards from '../cards/cards';
-import Map from '../map/map';
+import Cards from '../../components/cards/cards';
+import Map from '../../components/map/map';
 import { PointType } from '../../types/point';
 import { CitiesType, CityType } from '../../types/city';
-import Cities from '../cities/cities';
+import Cities from '../../components/cities/cities';
 import { useAppSelector } from '../../hooks';
 import { FilterType } from '../../types/filter';
 import { CardsType } from '../../types/card';
-import Filter from '../filter/filter';
-import Header from '../header/header';
+import Filter from '../../components/filter/filter';
+import Header from '../../components/header/header';
 import { ReducerTypes } from '../../utils/constants';
+import MainEmpty from './main-empty';
 
 type MainProps = {
   onListItemHover: (listItemName: string) => void;
@@ -42,27 +43,29 @@ function Main(props: MainProps): JSX.Element {
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              <Cities cities = {cities} />
+              <Cities cities={cities} />
             </ul>
           </section>
         </div>
-        <div className="cities">
-          <div className="cities__places-container container">
-            <section className="cities__places places">
-              <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{currentPlacesNumber} places to stay in {currentCityTitle}</b>
-              <Filter onChange={onChange} currentSort={currentSort} />
-              <div className="cities__places-list places__list tabs__content">
-                <Cards onListItemHover={onListItemHover} sortOffers={sortOffers} />
-              </div>
-            </section>
-            <div className="cities__right-section">
-              <section className="cities__map map">
-                <Map selectedPoint = {selectedPoint} offers = {offers} currentCity = {currentCity}/>
+        {currentPlacesNumber === 0 ? <MainEmpty currentCity={currentCity} />
+          :
+          <div className="cities">
+            <div className="cities__places-container container">
+              <section className="cities__places places">
+                <h2 className="visually-hidden">Places</h2><b className="places__found">{currentPlacesNumber} places to stay in {currentCityTitle}</b>
+                <Filter onChange={onChange} currentSort={currentSort} />
+                <div className="cities__places-list places__list tabs__content">
+                  <Cards onListItemHover={onListItemHover} sortOffers={sortOffers} />
+                </div>
+
               </section>
+              <div className="cities__right-section">
+                <section className="cities__map map">
+                  <Map selectedPoint={selectedPoint} offers={offers} currentCity={currentCity} />
+                </section>
+              </div>
             </div>
-          </div>
-        </div>
+          </div>}
       </main>
     </div>
   );

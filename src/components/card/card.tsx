@@ -1,6 +1,8 @@
 import { CardType } from '../../types/card';
 import { Link } from 'react-router-dom';
 import { MouseEvent } from 'react';
+import Bookmark from '../bookmark/bookmark';
+import { cssClass } from '../../utils/constants';
 
 type CardProps = {
   offer: CardType;
@@ -9,9 +11,9 @@ type CardProps = {
 
 function Card(props: CardProps): JSX.Element {
 
-  const {offer, onListItemHover} = props;
+  const { offer, onListItemHover } = props;
 
-  const {title, price, isPremium, previewImage, id, type, rating} = offer;
+  const { title, price, isPremium, previewImage, id, type, rating } = offer;
 
   const handleListItemHover = (event: MouseEvent<HTMLLIElement>) => {
     event.preventDefault();
@@ -23,8 +25,8 @@ function Card(props: CardProps): JSX.Element {
     onListItemHover('');
   };
 
-  return(
-    <article className="cities__card place-card" onMouseEnter={handleListItemHover} onMouseLeave={handleMouseLeave} id = {id}>
+  return (
+    <article className="cities__card place-card" onMouseEnter={handleListItemHover} onMouseLeave={handleMouseLeave} id={id}>
       {isPremium ? <div className="place-card__mark"><span>Premium</span></div> : null}
       <div className="cities__image-wrapper place-card__image-wrapper">
         <Link to={`/offer/${id}`}>
@@ -37,16 +39,11 @@ function Card(props: CardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button button" type="button">
-            <svg className="place-card__bookmark-icon" width="18" height="19">
-              <use xlinkHref="#icon-bookmark"></use>
-            </svg>
-            <span className="visually-hidden">To bookmarks</span>
-          </button>
+          <Bookmark offer={offer} sectionClass={cssClass.PlaceCard} />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: `${Math.floor(rating + 0.5) * 20}%`}}></span>
+            <span style={{ width: `${Math.floor(rating + 0.5) * 20}%` }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

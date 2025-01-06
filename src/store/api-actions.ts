@@ -1,13 +1,13 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state.js';
-import { CardsType } from '../types/card.js';
-import { setOffers, requireAuthorization, setError, showCardsLoader, showOfferLoader, redirectToRoute, setOffer, setReviews, setNearbyOffers, showReviewsLoader, showNearbyLoader, setUserData, cleanUserData } from './actions';
+import { CardsType, CardType } from '../types/card.js';
+import { setOffers, requireAuthorization, setError, showCardsLoader, showOfferLoader, redirectToRoute, setOffer, setReviews, setNearbyOffers, showReviewsLoader, showNearbyLoader, setUserData, cleanUserData, setFavouriteOffers, showFavouriteLoader, cleanFavouriteOffers } from './actions';
 import { APIRoute, AuthorizationStatus, ReducerTypes, TIMEOUT_SHOW_ERROR } from '../utils/constants.js';
 import { APIActions } from '../utils/constants';
 import { AuthType } from '../types/auth.js';
 import { UserType } from '../types/user.js';
-import { saveToken, dropToken } from '../services/token';
+import { saveToken, dropToken, getToken } from '../services/token';
 import { store } from './index.ts';
 import { OfferType } from '../types/offer.ts';
 import { ReviewsType, ReviewType } from '../types/review.ts';
@@ -88,6 +88,7 @@ export const logoutAction = createAsyncThunk<void, undefined, {
     localStorage.removeItem('email');
     localStorage.removeItem('avatarUrl');
     dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+    dispatch(cleanFavouriteOffers());
   },
 );
 
@@ -112,7 +113,7 @@ export const createCommentAction = createAsyncThunk<void, CommentType, {
 }>(
   APIActions.CREATE_COMMENT,
   async ({ id, comment, rating }, { dispatch, getState, extra: api }) => {
-    const {status} = await api.post<ReviewType>(`${APIRoute.Comments}/${id}`, {comment, rating});
+    const { status } = await api.post<ReviewType>(`${APIRoute.Comments}/${id}`, { comment, rating });
     const state = getState();
     if (status === Number(StatusCodes.CREATED) && state[ReducerTypes.OFFER_REDUCER].offer) {
       dispatch(getReviewsAction(state[ReducerTypes.OFFER_REDUCER].offer?.id));
@@ -143,3 +144,33 @@ export const clearErrorAction = createAsyncThunk(
     );
   },
 );
+
+export const getFavouriteOffersAction = createAsyncThunk<CardsType, undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  APIActions.GET_FAVOURITE,
+  async (_arg, { dispatch, extra: api }) => {
+    const { data } = await api.get<CardsType>(APIRoute.Favourite, {params: { 'X-Token': getToken()}});
+    dispatch(showFavouriteLoader(false));
+    dispatch(setFavouriteOffers(data));
+    return data;
+  },
+);
+
+export const toggleFavouriteOffersAction = createAsyncThunk<void, { id: string; favState: boolean }, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  APIActions.TOGGLE_FAVOURITE,
+  async ({ id, favState }, { dispatch, extra: api }) => {
+    const { status } = await api.post<CardType>(`${APIRoute.Favourite}/${id}/${favState ? 1 : 0}`);
+    if ((status === Number(StatusCodes.CREATED) || status === Number(StatusCodes.OK))) {
+      dispatch(getFavouriteOffersAction());
+      dispatch(getOffersAction());
+    }
+  },
+);
+
